@@ -17,6 +17,7 @@ public class Bits {
         System.out.println(fifteen);
 
 
+        String test = "HelloHello";
 
     }
 }

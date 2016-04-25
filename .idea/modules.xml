@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/MyProjects.iml" filepath="$PROJECT_DIR$/MyProjects.iml" />
       <module fileurl="file://$PROJECT_DIR$/RandomStuff/RandomStuff.iml" filepath="$PROJECT_DIR$/RandomStuff/RandomStuff.iml" />
       <module fileurl="file://$PROJECT_DIR$/RedditHelp/RedditHelp.iml" filepath="$PROJECT_DIR$/RedditHelp/RedditHelp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Threads/Threads.iml" filepath="$PROJECT_DIR$/Threads/Threads.iml" />
       <module fileurl="file://$PROJECT_DIR$/XML/XML.iml" filepath="$PROJECT_DIR$/XML/XML.iml" />
     </modules>
   </component>
