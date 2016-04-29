@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Builder/Builder.iml" filepath="$PROJECT_DIR$/Builder/Builder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cardgames/Cardgames.iml" filepath="$PROJECT_DIR$/Cardgames/Cardgames.iml" />
       <module fileurl="file://$PROJECT_DIR$/Encrypted/Encrypted.iml" filepath="$PROJECT_DIR$/Encrypted/Encrypted.iml" />
       <module fileurl="file://$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" filepath="$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" />
       <module fileurl="file://$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" filepath="$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" />
