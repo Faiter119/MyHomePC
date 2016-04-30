@@ -7,8 +7,7 @@ import java.util.Random;
  */
 public final class Coin { // Final == can't be subclassed
 
-    public static final int HEADS = 1; // The side with the picture of a person
-    public static final int TAILS = 2; // The side with the value
+    public enum Sides{HEADS,TAILS}
 
     private static Random r = new Random();
 
@@ -35,7 +34,7 @@ public final class Coin { // Final == can't be subclassed
 
             int flip = Coin.flip();
 
-            if(flip == Coin.HEADS){
+            if(flip == 1){
                 heads++;
             }
             else{

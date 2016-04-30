@@ -11,6 +11,7 @@ public class ThreadTest{
         new Thread(time).start();
         new Thread(system).start();
 
+        // 3 Threads: time, system, and main
 
         try {
             Thread.sleep(2500);

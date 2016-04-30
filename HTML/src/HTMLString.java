@@ -54,6 +54,7 @@ public class HTMLString {
         public Builder(String string){
             this.string = string;
         }
+
         public Builder doctype(){ // Type of HTML doc
             this.string = "<!DOCTYPE html>"+string;
             return this;
@@ -102,30 +103,9 @@ public class HTMLString {
 
 
     public static void main(String[]args){
-        // Paragraph file
-        HTMLString htmlString = new HTMLString.Builder("This is my Paragraph inside a body inside an HTML doc").paragraph().body().html().doctype().build();
-        //System.out.println(htmlString);
-        // Paragraph file End
-        // Combo
-
-
-       /* System.out.println(htmlHeader);
-        System.out.println(htmlParagraph);
-
-        System.out.println(combo);*/
-
-
-        // HTMLString.printHTML(combo);
-        // Combo End
-
-        // List
-        //System.out.println("\n"+list);
-        // List End
-
-
-        //HTMLString.printHTML(string);
 
         // <br> = \n
+/*
         HTMLString header = new HTMLString.Builder("Made by Faiter119").heading(1).build();
         HTMLString paragraph = new HTMLString.Builder("Damn son aint that some shit right there,<br> mhm yea that's some good shit right there if I do say so myself. <br>I do say so!").paragraph().build();
         HTMLString list = new HTMLString.Builder("List").unorderedList("Chese","Pizza","Taco","Good Shit","PCMR").build();
@@ -133,8 +113,12 @@ public class HTMLString {
         HTMLString combo = new HTMLString.Builder(""+header+list+paragraph).body().html().doctype().build();
         System.out.println(combo);
         System.out.println(combo.writeToFile("./HTML/src/myWebSite.html"));
+*/
 
+        HTMLString simpleParagraph = new HTMLString.Builder("Im a simple paragraph-website!")
+                .paragraph().body().html().doctype().build();
 
+        simpleParagraph.writeToFile("./HTML/src/myWebSite.html");
 
     }
 }

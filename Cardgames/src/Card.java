@@ -66,7 +66,7 @@ public class Card implements Comparable<Card>{
         Card tenOfHearts = new Card(Suit.HEARTS, 10);
 
 
-        System.out.println(aceOfSpades+" "+tenOfHearts);
+        System.out.println(aceOfSpades+" - "+tenOfHearts);
         System.out.println(aceOfSpades.compareToAsString(tenOfHearts));
 
     }
