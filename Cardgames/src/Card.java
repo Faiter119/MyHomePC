@@ -7,7 +7,8 @@ public class Card implements Comparable<Card>{
         SPADES,
         HEARTS,
         CLUBS,
-        DIAMONDS;
+        DIAMONDS,
+        ERROR;
 
         public String toString() {
             return super.toString().substring(0,1)+super.toString().substring(1,super.toString().length()).toLowerCase(); // Verbosity, bitch
@@ -55,7 +56,6 @@ public class Card implements Comparable<Card>{
                     break;
             }
         }
-
 
         return out+" of "+suit;
     }
