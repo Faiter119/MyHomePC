@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Blackjack {
 
-    public enum Player {DEALER, PLAYER}
+    public enum Player {DEALER, PLAYER, TIE}
 
     private Map<Player, List<Card>> players;
 
@@ -25,9 +25,10 @@ public class Blackjack {
         }
 
     }
-    public void draw(Player player){
+    public Card draw(Player player){
         Card card = deck.draw();
         players.get(player).add(card);
+        return card;
     }
     public void startingHand(){
 
@@ -46,7 +47,7 @@ public class Blackjack {
 
         return new ArrayList<>(); // Empty List
     }
-    public int checkScore(Player player){
+    public int getScore(Player player){
 
         int score = 0;
 
@@ -76,6 +77,22 @@ public class Blackjack {
 
         return builder.toString();
     }
+    public Player getWinner(){
+
+        if(getScore(Player.PLAYER) > 21){
+            return Player.DEALER;
+        }
+        if(getScore(Player.DEALER) > 21){
+            return Player.PLAYER;
+        }
+
+        int playerScore = getScore(Player.PLAYER);
+        int dealerScore = getScore(Player.DEALER);
+
+
+        return (playerScore == dealerScore) ? Player.TIE : (playerScore > dealerScore) ? Player.PLAYER : Player.DEALER;
+
+    }
 
     public static void main(String[]args){
 
@@ -84,8 +101,8 @@ public class Blackjack {
         blackjack.startingHand();
 
 
-        System.out.println(blackjack.getCards(Player.DEALER)+"\n"+blackjack.checkScore(Player.DEALER));
-        System.out.println(blackjack.getCards(Player.PLAYER)+"\n"+blackjack.checkScore(Player.PLAYER));
+        System.out.println(blackjack.getCards(Player.DEALER)+"\n"+blackjack.getScore(Player.DEALER));
+        System.out.println(blackjack.getCards(Player.PLAYER)+"\n"+blackjack.getScore(Player.PLAYER));
 
 
     }
