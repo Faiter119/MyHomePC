@@ -1,8 +1,10 @@
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-public class Generics {
+public class Generics<T> { // Generic class
 
     public static <T extends Number> int sum(T...a){
         int sum = 0;
@@ -45,17 +47,30 @@ public class Generics {
             index++;
         }
     }
+    public static <T> List<T> asList(T first, T ... rest){
+
+        List<T> list = new ArrayList<>(); // Ikke prøv å bruk []s, det er rassert
+
+        list.add(first); // fucke sæ ikke hvis varargsn e tom
+
+        for(T element : rest){
+            list.add(element);
+        }
+
+        return list;
+    }
 
     public static void main(String[]args){
 
+        List<?> list = asList("Olav","Har",10,"Skills"); // <?>
 
-        String test = "olav";
+        System.out.println(list.getClass());
 
-        System.out.println(test.length()+"\n"+test.indexOf('l'));
+        System.out.println(asList(list)); // Forskjellige ting i listen? op
 
-
-
-
+        for(Object element : list){
+            System.out.println(element.getClass());
+        }
 
     }
 }

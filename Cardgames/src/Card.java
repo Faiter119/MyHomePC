@@ -57,7 +57,7 @@ public class Card implements Comparable<Card>{
             }
         }
 
-        return out+" of "+suit;
+        return "["+out+" of "+suit+"]";
     }
 
     public static void main(String[]args){

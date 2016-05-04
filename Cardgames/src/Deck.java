@@ -9,14 +9,14 @@ public class Deck {
 
     public Deck(){
 
-        cards = new ArrayList<>();
+        this.cards = new ArrayList<>();
 
         for(int i=0; i<4; i++){
 
             for(int j=1; j<=13; j++){
 
                 cards.add(new Card(Card.Suit.values()[i],j));
-                initialNumberOfCards++;
+                this.initialNumberOfCards++;
             }
         }
     }
@@ -60,14 +60,16 @@ public class Deck {
 
         Deck deck = new Deck();
 
-        System.out.println(deck+"\n"+deck.size());
+      /*  System.out.println(deck+"\n"+deck.size());
 
         for(int i = 0; i < deck.getInitialNumberOfCards(); i++){
             System.out.println("Drew : "+deck.draw());
         }
 
         System.out.println(deck.size());
-        System.out.println(deck);
+        System.out.println(deck);*/
+        Card card = deck.draw();
+        System.out.println(card+" - "+card.getValue());
 
     }
 }
