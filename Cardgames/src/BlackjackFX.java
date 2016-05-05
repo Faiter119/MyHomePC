@@ -1,11 +1,15 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.security.spec.ECField;
@@ -30,6 +34,7 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
 
         // Elements of the UI
         TextArea playerHand = new TextArea(); playerHand.setEditable(false);
+        Text resultText = new Text("Result here");
         TextArea dealerHand = new TextArea(); dealerHand.setEditable(false);
 
         Button startButton = new Button("Start"); startButton.setPrefSize(100,30);
@@ -44,21 +49,20 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
 
             if(startButton.getText().equals("Restart")) {
                 blackjack = new Blackjack();
-                startButton.setText("Start");dealerHand.setText(""); playerHand.setText("");
-                hitButton.setDisable(true); standButton.setDisable(true); doubleButton.setDisable(true); splitButton.setDisable(true);
+                startButton.setText("Start");dealerHand.setText(""); playerHand.setText("");resultText.setText("Result here");
+                greyOutButtons(hitButton, standButton, doubleButton, splitButton);
 
             }
             else {
                 blackjack.startingHand();
                 playerHand.setText(blackjack.getCardsAsString(Blackjack.Player.PLAYER));
-                dealerHand.setText("[Hidden]\n"+blackjack.getCards(Blackjack.Player.DEALER).get(1));
+                dealerHand.setText("[Hidden]\n" + blackjack.getCards(Blackjack.Player.DEALER).get(1));
 
                 startButton.setText("Restart");
-                hitButton.setDisable(false);
-                standButton.setDisable(false);
-                doubleButton.setDisable(false);
+                enableButtons(hitButton, standButton, doubleButton);
+
                 if(blackjack.getCards(Blackjack.Player.PLAYER).get(0)
-                        .compareTo(blackjack.getCards(Blackjack.Player.PLAYER).get(1)) == 0){
+                        .compareTo(blackjack.getCards(Blackjack.Player.PLAYER).get(1)) == 0){ // Both starting-cards are the same, aka can be split
                     splitButton.setDisable(false);
                 }
             }
@@ -71,8 +75,11 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
             playerHand.setText(blackjack.getCardsAsString(Blackjack.Player.PLAYER));
 
             if(blackjack.getScore(Blackjack.Player.PLAYER) > 21){
-                playerHand.setText("You Lost");
+                //playerHand.setText("You Lost");
+                resultText.setText("You broke with "+blackjack.getScore(Blackjack.Player.PLAYER)+" points.");
                 dealerHand.setText(blackjack.getCardsAsString(Blackjack.Player.DEALER));
+                greyOutButtons(hitButton, standButton, doubleButton, splitButton);
+
             }
         });
 
@@ -87,8 +94,9 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
 
             }
 
-            Blackjack.Player winner = blackjack.getWinner();
-            System.out.println(winner.toString()+" is the winner!");
+            Blackjack.Result winner = blackjack.getWinner();
+            resultText.setText(winner+" with the player having "+blackjack.getScore(Blackjack.Player.PLAYER)+ " points and the dealer having "+blackjack.getScore(Blackjack.Player.DEALER)+" points.");
+            System.out.println(winner);
 
         });
 
@@ -99,7 +107,8 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
 
             blackjack.draw(Blackjack.Player.PLAYER); // You go 100% extra bet on one more card
 
-            Blackjack.Player winner = blackjack.getWinner();
+            Blackjack.Result winner = blackjack.getWinner();
+            System.out.println(winner);
 
         });
         splitButton.setOnAction(event -> {
@@ -114,15 +123,28 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
         GridPane pane = new GridPane();
         pane.setHgap(20); pane.setVgap(20); pane.setPadding(new Insets(20));
 
-        HBox hBox = new HBox(); hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(startButton,hitButton,standButton,doubleButton,splitButton);
+        HBox horizontalButtons = new HBox(); horizontalButtons.setAlignment(Pos.CENTER);
+        horizontalButtons.getChildren().addAll(startButton,hitButton,standButton,doubleButton,splitButton);
 
         pane.add(playerHand,0,0,4,1);
-        pane.add(hBox,0,1,4,1);
-        pane.add(dealerHand,0,2,4,1);
-        // End Asembling the layout
+        pane.add(resultText,0,1,4,1);
+        pane.add(horizontalButtons,0,2,4,1);
+        pane.add(dealerHand,0,3,4,1);
 
+        //pane.setGridLinesVisible(true);
+        // End Asembling the layout
         return new Scene(pane);
+    }
+
+    private void greyOutButtons(Button ... buttons){
+        for(Button button : buttons){
+            button.setDisable(true);
+        }
+    }
+    private void enableButtons(Button ... buttons){
+        for(Button button : buttons){
+            button.setDisable(false);
+        }
     }
 
     public static void main(String[]args){
@@ -130,6 +152,4 @@ public class BlackjackFX extends Application{ // Now with 100% more JavaFX
         BlackjackFX.launch();
 
     }
-
-
 }

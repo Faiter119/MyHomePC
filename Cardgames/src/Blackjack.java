@@ -5,12 +5,35 @@ import java.util.Map;
 
 public class Blackjack {
 
-    public enum Player {DEALER, PLAYER, TIE}
+    public enum Player {DEALER, PLAYER}
 
+    /**
+     * Represents the states of the game
+     */
+    public enum Result {
+
+        WIN("The player won"), LOSS("The dealer won"), TIE("It's a tie");
+
+        private String message;
+        Result(String message){
+            this.message = message;
+        }
+        public String toString(){return message;}
+    }
+
+    /**
+     * Maps the player with their respective cards, via List<Card> and Player
+     */
     private Map<Player, List<Card>> players;
 
+    /**
+     * The deck used by this instance
+     */
     private Deck deck;
 
+    /**
+     * Object that plays the game Blackjack
+     */
     public Blackjack(){
 
         this.deck = new Deck();
@@ -25,11 +48,21 @@ public class Blackjack {
         }
 
     }
+
+    /**
+     * Draws a card for a player
+     * @param player The player in question
+     * @return The card drawn
+     */
     public Card draw(Player player){
         Card card = deck.draw();
         players.get(player).add(card);
         return card;
     }
+
+    /**
+     * Draws 2 cards for each player.
+     */
     public void startingHand(){
 
         for(List<Card> player : players.values()){
@@ -39,6 +72,12 @@ public class Blackjack {
             }
         }
     }
+
+    /**
+     * Gets a players cards
+     * @param player
+     * @return
+     */
     public List<Card> getCards(Player player){
 
         if(players.containsKey(player)) {
@@ -47,6 +86,12 @@ public class Blackjack {
 
         return new ArrayList<>(); // Empty List
     }
+
+    /**
+     * Gets the score of a player
+     * @param player Player in question
+     * @return score as int
+     */
     public int getScore(Player player){
 
         int score = 0;
@@ -55,14 +100,45 @@ public class Blackjack {
             List<Card> cards = players.get(player);
 
             for (Card card : cards){
+
                 int value = card.getValue();
 
-                if(value > 10) value = 10;
-                if(value == 1) value = 11;
+                if(card.getType() != Card.Type.NORMAL) card.setValue(10);
+                if(card.getType() == Card.Type.ACE) card.setValue(11);
 
-                score += value;
+                score += card.getValue();
+            }
+
+            if(score > 21 && hasAce(player)){
+                return aceConvert(player);
             }
         }
+
+
+        return score;
+    }
+    private boolean hasAce(Player player){
+        List<Card> cards = players.get(player);
+
+        for(Card card : cards){
+            if(card.getType() == Card.Type.ACE) return true;
+        }
+        return false;
+    }
+    private int aceConvert(Player player){
+
+        int score = 0;
+
+        List<Card> cards = players.get(player);
+
+        for (Card card : cards){
+
+            if(card.getType() == Card.Type.ACE) card.setValue(1);
+
+            score += card.getValue();
+        }
+
+
 
         return score;
     }
@@ -77,20 +153,20 @@ public class Blackjack {
 
         return builder.toString();
     }
-    public Player getWinner(){
+    public Result getWinner(){
 
         if(getScore(Player.PLAYER) > 21){
-            return Player.DEALER;
+            return Result.LOSS;
         }
         if(getScore(Player.DEALER) > 21){
-            return Player.PLAYER;
+            return Result.WIN;
         }
 
         int playerScore = getScore(Player.PLAYER);
         int dealerScore = getScore(Player.DEALER);
 
 
-        return (playerScore == dealerScore) ? Player.TIE : (playerScore > dealerScore) ? Player.PLAYER : Player.DEALER;
+        return (playerScore == dealerScore) ? Result.TIE : (playerScore > dealerScore) ? Result.WIN : Result.LOSS;
 
     }
 
