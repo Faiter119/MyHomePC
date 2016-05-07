@@ -11,7 +11,7 @@ public class A1 extends RubrikkTypeA {
 
     }
 
-    int getInntekt() {
+    public int getInntekt() {
         List<Annonse> annonser = getAnnonser();
         int sum = 0;
 

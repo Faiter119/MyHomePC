@@ -60,6 +60,14 @@ public class Blackjack {
         return card;
     }
 
+    public void drawTo(int including, Player player){
+
+        while (getScore(player) < including){
+            draw(player);
+        }
+
+    }
+
     /**
      * Draws 2 cards for each player.
      */

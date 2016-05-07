@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ASCI-Art/ASCI-Art.iml" filepath="$PROJECT_DIR$/ASCI-Art/ASCI-Art.iml" />
       <module fileurl="file://$PROJECT_DIR$/Builder/Builder.iml" filepath="$PROJECT_DIR$/Builder/Builder.iml" />
       <module fileurl="file://$PROJECT_DIR$/Cardgames/Cardgames.iml" filepath="$PROJECT_DIR$/Cardgames/Cardgames.iml" />
       <module fileurl="file://$PROJECT_DIR$/Eksamen/Eksamen.iml" filepath="$PROJECT_DIR$/Eksamen/Eksamen.iml" />
@@ -10,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" filepath="$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" />
       <module fileurl="file://$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" filepath="$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" />
       <module fileurl="file://$PROJECT_DIR$/HTML/HTML.iml" filepath="$PROJECT_DIR$/HTML/HTML.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSON/JSON.iml" filepath="$PROJECT_DIR$/JSON/JSON.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyProjects.iml" filepath="$PROJECT_DIR$/MyProjects.iml" />
       <module fileurl="file://$PROJECT_DIR$/RandomStuff/RandomStuff.iml" filepath="$PROJECT_DIR$/RandomStuff/RandomStuff.iml" />
       <module fileurl="file://$PROJECT_DIR$/RedditHelp/RedditHelp.iml" filepath="$PROJECT_DIR$/RedditHelp/RedditHelp.iml" />

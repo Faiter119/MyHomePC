@@ -7,6 +7,7 @@ import sun.misc.BASE64Encoder;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.*;
 import java.util.*;
 
 public class Testing {
@@ -63,17 +64,7 @@ public class Testing {
 /**********************************************************************************************************************/
         // BigDecimal
 
-        BigDecimal decimal = new BigDecimal(9999.1);
-        decimal.add(new BigDecimal(0.9));
-
-        System.out.println(decimal.doubleValue());
-        // BigDecimal
-
-        // BigInteger
-
-        BigInteger integer = new BigInteger("19");
-        System.out.println(integer.toString());
-
-        // BigInteger
+        Period period = Period.between(LocalDate.now(),LocalDate.parse("2016-01-01"));
+        System.out.println(period);
     }
 }
