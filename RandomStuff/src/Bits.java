@@ -12,12 +12,12 @@ public class Bits {
         //                    0000 1000 // And
         //                    0000 1111 // Or
 
-        System.out.println(fifteen | eight);
-
-        System.out.println(fifteen);
-
-
         String test = "HelloHello";
+
+        int five = 0b10000000000000000000000000000001;
+        System.out.println((five));
+        System.out.println(Integer.toBinaryString(five));
+        System.out.println(Integer.MAX_VALUE);
 
     }
 }
