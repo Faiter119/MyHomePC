@@ -1,3 +1,5 @@
+package Fundementals;
+
 /**
  * Immutable class to represent an radians in degrees
  */
@@ -30,19 +32,20 @@ public class Angle {
         // - - angle = arcCos(A^2+B^2+C^2 / 2AB)
         // Pythagoras only for 90 degree triangles: C^2 = A^2 + B^2
 
-        double a = Point.distanceBetween(p1,p2);
-        double b = Point.distanceBetween(p2,p0);
-        double c = Point.distanceBetween(p0,p1);
+        double a = Point.distanceBetween(p1,p2);            //      p2|\   } a
+        double b = Point.distanceBetween(p2,p0);            //        | \  }
+        double c = Point.distanceBetween(p0,p1);            //      p0|__\p1     a = Opposite side of p0 and so on
 
-        System.out.println(a +" "+b+" "+c);
+        double angle = Math.acos(((a*a) + (c*c) - (b*b))/(2*a*c));
 
-        double angle = Math.acos(((a*a) + (b*b) - (c*c))/(2*a*b));
-
-        System.out.println(angle);
+        // System.out.println(angle);
 
         return new Angle(angle);
     }
 
+    public String toString() {
+        return Double.toString(degrees());
+    }
 
     public static void main(String[] args) {
 
