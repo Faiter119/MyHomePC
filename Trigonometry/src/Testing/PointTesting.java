@@ -5,6 +5,8 @@ import Fundementals.Point;
 import Shapes.Line;
 import Shapes.Triangle;
 
+import java.util.ArrayList;
+
 public class PointTesting {
 
     public static void main(String[] args) {
@@ -21,6 +23,8 @@ public class PointTesting {
 
         Triangle t = new Triangle(p0, p1, p2);
         System.out.println(t);
+
+
 
 
 
