@@ -24,6 +24,9 @@ public class Point {
     public double y(){return y;}
     public double z(){return z;}
 
+    public Point move(double x, double y, double z){
+        return new Point(x,y,z);
+    }
     public Point translate(Axis axis, double distance){
 
         switch(axis){
@@ -36,6 +39,9 @@ public class Point {
             default:
                 return this;
         }
+    }
+    public Point translate(double dx, double dy, double dz){
+        return new Point(x+dx,y+dy,z+dz);
     }
 
     public Point scale(double scale){ return new Point(x*scale, y*scale, z*scale); }

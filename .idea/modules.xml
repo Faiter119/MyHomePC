@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/Encrypted/Encrypted.iml" filepath="$PROJECT_DIR$/Encrypted/Encrypted.iml" />
       <module fileurl="file://$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" filepath="$PROJECT_DIR$/EncryptedNoteTaker/EncryptedNoteTaker.iml" />
       <module fileurl="file://$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" filepath="$PROJECT_DIR$/FX&amp;Swing/FX&amp;Swing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Game/Game.iml" filepath="$PROJECT_DIR$/Game/Game.iml" />
       <module fileurl="file://$PROJECT_DIR$/HTML/HTML.iml" filepath="$PROJECT_DIR$/HTML/HTML.iml" />
       <module fileurl="file://$PROJECT_DIR$/Hotelmanager/Hotelmanager.iml" filepath="$PROJECT_DIR$/Hotelmanager/Hotelmanager.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyProjects.iml" filepath="$PROJECT_DIR$/MyProjects.iml" />
@@ -18,6 +19,7 @@
       <module fileurl="file://$PROJECT_DIR$/Stream/Stream.iml" filepath="$PROJECT_DIR$/Stream/Stream.iml" />
       <module fileurl="file://$PROJECT_DIR$/Threads/Threads.iml" filepath="$PROJECT_DIR$/Threads/Threads.iml" />
       <module fileurl="file://$PROJECT_DIR$/Trigonometry/Trigonometry.iml" filepath="$PROJECT_DIR$/Trigonometry/Trigonometry.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Utility/Utility.iml" filepath="$PROJECT_DIR$/Utility/Utility.iml" />
       <module fileurl="file://$PROJECT_DIR$/XML/XML.iml" filepath="$PROJECT_DIR$/XML/XML.iml" />
     </modules>
   </component>
