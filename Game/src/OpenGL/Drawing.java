@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.CubicCurve2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 
 public class Drawing extends JComponent{
 
@@ -55,7 +56,6 @@ public class Drawing extends JComponent{
         frame.setVisible(true);
 
         drawing.re();
-
-
+        
     }
 }

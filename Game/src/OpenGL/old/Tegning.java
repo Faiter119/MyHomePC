@@ -14,6 +14,8 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 import com.jogamp.opengl.util.FPSAnimator;
 import com.jogamp.opengl.util.gl2.GLUT;
+
+import java.awt.*;
 import java.lang.Math;
 import java.util.Arrays;
 import javax.swing.JOptionPane; 		// Import Swing JOptionPane
@@ -246,7 +248,6 @@ public class Tegning extends GLCanvas implements GLEventListener{
         gl.glColor3f(0f,0f,1f);
         glut.glutWireSphere(1,5,5);
         //tegnKule(glDrawable,1);
-
         gl.glLoadIdentity();
 
         gl.glTranslatef(3f,2f,-3f);
