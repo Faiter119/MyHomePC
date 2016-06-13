@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-public class Person implements Serializable{
+public class Person implements Serializable, Comparable<Person>{
 
     public enum Sex{
 
@@ -35,7 +36,7 @@ public class Person implements Serializable{
     public String name(){       return name;}
     public LocalDate birth(){   return birth;}
     public Sex sex(){           return sex;}
-    public int age(){           return Period.between(birth, LocalDate.now()).getDays();}
+    public int age(){           return Period.between(birth, LocalDate.now()).getYears();}
 
     public String toString(){   return name+" : "+sex+" : "+birth; }
 
@@ -46,6 +47,10 @@ public class Person implements Serializable{
         if (age() != p.age()) return false;
 
         return true;
+    }
+
+    public int compareTo(Person o) {
+        return name.compareTo(o.name());
     }
 
     public int hashCode() { // "Indexen" i en hash-table, sykt fordi du søker raskt osv
@@ -64,22 +69,34 @@ public class Person implements Serializable{
 
     public static void main(String[] args){
 
-        long start = System.currentTimeMillis();
+        /*long start = System.currentTimeMillis();*/
 
         List<Person> persons = Arrays.asList(
-                new Person("Olav Reppe Husby", Person.Sex.MALE, LocalDate.of(1996,8,6)),
+                new Person("Olav Reppe Husby", Person.Sex.MALE, LocalDate.of(1996,6,8)),
                 new Person("Per Bjarte", Person.Sex.MALE, LocalDate.of(1990,1,1)),
                 new Person("Lise Saus", Person.Sex.FEMALE, LocalDate.of(1986,2,3)),
                 new Person("Gunnar Gnaus", Person.Sex.MALE, LocalDate.of(1995,2,9)),
-                new Person("Valentina Kerman", Person.Sex.FEMALE, LocalDate.of(1996,5,25))
+                new Person("Valentina Kerman", Person.Sex.FEMALE, LocalDate.of(1996,5,25)),
+                new Person("Larse Mat",Sex.MALE, LocalDate.of(1996,1,1)),
+                new Person("Trude Reppe",Sex.FEMALE, LocalDate.of(1962,5,26)),
+                new Person("Eldbjørn Husby", Sex.MALE, LocalDate.of(1960,2,13))
         );
 
-        for (Person p : persons) {
-            System.out.println(p + " \t\t- "+p.hashCode());
+        /*for (Person p : persons) {
+            System.out.println(p + " \t\t- "+p.hashCode()+" "+p.age());
+        }*/
+
+        /*long end = System.currentTimeMillis();
+        System.out.println("\n"+(end-start));*/
+
+        Person[] array = persons.stream()
+                .filter((Person p)->(p.age() >= 20))
+                .filter(p->p.sex()==Sex.MALE)
+                .sorted((p0,p1)->(-Integer.compare(p0.age(),p1.age())))
+                .toArray(Person[]::new);
+
+        for(Person o : array){
+            System.out.println(o);
         }
-
-        long end = System.currentTimeMillis();
-        System.out.println("\n"+(end-start));
-
     }
 }

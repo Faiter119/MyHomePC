@@ -27,7 +27,7 @@ public class Point {
     public Point move(double x, double y, double z){
         return new Point(x,y,z);
     }
-    public Point translate(Axis axis, double distance){
+    public Point add(Axis axis, double distance){
 
         switch(axis){
             case X:
@@ -40,8 +40,13 @@ public class Point {
                 return this;
         }
     }
-    public Point translate(double dx, double dy, double dz){
+    public Point add(double dx, double dy, double dz){
         return new Point(x+dx,y+dy,z+dz);
+    }
+    public Point add(Point p){ return new Point(x+p.x(),y+p.y(),z+p.z()); }
+
+    public static Point combine(Point p0, Point p1){
+        return new Point(p0.x()+p1.x(),p0.y()+p1.y(),p0.z()+p1.z());
     }
 
     public Point scale(double scale){ return new Point(x*scale, y*scale, z*scale); }

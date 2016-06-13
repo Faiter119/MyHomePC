@@ -1,5 +1,6 @@
 package Shapes;
 
+import Fundementals.Angle;
 import Fundementals.Axis;
 import Fundementals.Point;
 
@@ -14,6 +15,8 @@ public class Line {
         this.p1 = p1;
 
     }
+    public Point p0(){return p0;}
+    public Point p1(){return p1;}
     public Point[] points(){ return new Point[]{p0,p1};} // new table, ie immutable
 
     public double length(){
@@ -25,7 +28,7 @@ public class Line {
      */
     public Line translate(Axis axis, double distance){
 
-        return new Line(p0.translate(axis, distance),p1.translate(axis, distance));
+        return new Line(p0.add(axis, distance),p1.add(axis, distance));
 
     }
 
@@ -42,9 +45,16 @@ public class Line {
         return new Line[]{new Line(p0,middle),new Line(middle,p1)};
 
     }
+    public boolean intersecs(Line line){
+        return false;
+    }
+
+    public Angle angleBetween(){
+        return null;
+    }
 
     public String toString() {
-        return "[("+p0+") -> ("+p1+")]";
+        return "["+p0+" -> "+p1+"]";
     }
 
     public static void main(String[] args) {
