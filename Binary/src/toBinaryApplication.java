@@ -3,12 +3,15 @@
  */
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,29 +23,54 @@ public class toBinaryApplication extends Application {
 
     public void start(Stage stage) {
 
-        GridPane pane = new GridPane();
-        pane.setVgap(20); pane.setHgap(20); pane.setPadding(new Insets(20,20,20,20));
+        BorderPane borderPane = new BorderPane();
 
-        Label inputLabel = new Label("Input Number Here: ");
-        TextField numberInput = new TextField();
-        Label outputLabel = new Label("Output Here: ");
-        Text text = new Text();
+        // Dropdown Menus
+            HBox dropdowns = new HBox();
+            dropdowns.setSpacing(10); dropdowns.setAlignment(Pos.CENTER); dropdowns.setPadding(new Insets(10,10,0,10));
 
-        pane.add(inputLabel,0,0);
-        pane.add(numberInput,1,0);
-        pane.add(outputLabel,0,1);
-        pane.add(text,1,1);
+            ObservableList<String> options = FXCollections.observableArrayList("Binary","Decimal","Hexadecimal");
 
-        numberInput.setOnAction((event)->{
+            ComboBox<String> inputType = new ComboBox<>(options);
+            ComboBox<String> outputType = new ComboBox<>(options);
 
-            String input = numberInput.getText();
-            String textAsBinary = Binary.toBinaryString(input);
-            text.setText(textAsBinary);
+            inputType.setValue("Decimal"); outputType.setValue("Binary");
 
-        });
+            dropdowns.getChildren().addAll(inputType, new Label("->"), outputType);
+        // Dropdown Menus
 
-        stage.setTitle("Integer -> Twos-compliment-binary");
-        stage.setScene(new Scene(pane));
+        // Gridpane - Main input, output
+            GridPane gridPane = new GridPane();
+            gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(20,20,20,20));
+
+
+            Label inputLabel = new Label("Input: ");
+
+            TextField numberInput = new TextField();
+
+            Label outputLabel = new Label("Output: ");
+
+            Text text = new Text();
+
+            gridPane.add(inputLabel,0,0);
+            gridPane.add(numberInput,1,0);
+            gridPane.add(outputLabel,0,1);
+            gridPane.add(text,1,1);
+
+            numberInput.setOnAction((event)->{
+
+                String calculated = Calculation.fromTo(inputType.getSelectionModel().getSelectedItem(), outputType.getSelectionModel().getSelectedItem(), numberInput.getText());
+
+                text.setText(calculated);
+
+            });
+        // Gridpane - Main input, output
+
+
+        borderPane.setTop(dropdowns);
+        borderPane.setCenter(gridPane);
+
+        stage.setScene(new Scene(borderPane));
         stage.show();
     }
 }
