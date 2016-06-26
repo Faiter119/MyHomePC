@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Apartment {
+public class Apartment implements Serializable{
 
     private int apartmentNumber;
     private String description = "";

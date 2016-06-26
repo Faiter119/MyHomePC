@@ -5,7 +5,7 @@ public class Primes {
 
     public static boolean isPrime(int nr){
 
-        if(nr == 1) return false;
+        if(nr == 1 || nr == 0 || nr == 2) return false;
 
         for(int i=2; i<nr/2; i++){
 
@@ -16,16 +16,19 @@ public class Primes {
     }
 
     public static void main(String[]args){
-        LocalTime start = LocalTime.now();
 
-        for(int i=0 ; i<1000000 ; i++){
-            isPrime(i);
-            //if(isPrime(i));
-           // System.out.println(i);
+        long start = System.currentTimeMillis();
+
+        for(int i=0 ; i<100 ; i++){
+
+            if(isPrime(i)){
+                System.out.println(i);
+            }
 
         }
 
-        LocalTime end = LocalTime.now();
-        System.out.println("The calculation took "+ Duration.between(start,end).getSeconds()+" seconds.");
+        long end = System.currentTimeMillis();
+
+        System.out.println("The calculation took "+(end-start));
     }
 }
