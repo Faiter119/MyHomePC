@@ -1,7 +1,3 @@
-/**
- * Created by Olav Husby on 26.06.2016.
- */
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class toBinaryApplication extends Application {
+public class NumberConverterApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -29,12 +25,12 @@ public class toBinaryApplication extends Application {
             HBox dropdowns = new HBox();
             dropdowns.setSpacing(10); dropdowns.setAlignment(Pos.CENTER); dropdowns.setPadding(new Insets(10,10,0,10));
 
-            ObservableList<String> options = FXCollections.observableArrayList("Binary","Decimal","Hexadecimal");
+            ObservableList<String> options = FXCollections.observableArrayList(Calculation.NumberalSystem.valuesString());
 
             ComboBox<String> inputType = new ComboBox<>(options);
             ComboBox<String> outputType = new ComboBox<>(options);
 
-            inputType.setValue("Decimal"); outputType.setValue("Binary");
+            inputType.setValue("Decimal(10)"); outputType.setValue("Binary(2)");
 
             dropdowns.getChildren().addAll(inputType, new Label("->"), outputType);
         // Dropdown Menus
@@ -45,11 +41,8 @@ public class toBinaryApplication extends Application {
 
 
             Label inputLabel = new Label("Input: ");
-
             TextField numberInput = new TextField();
-
             Label outputLabel = new Label("Output: ");
-
             Text text = new Text();
 
             gridPane.add(inputLabel,0,0);
@@ -59,13 +52,14 @@ public class toBinaryApplication extends Application {
 
             numberInput.setOnAction((event)->{
 
-                String calculated = Calculation.fromTo(inputType.getSelectionModel().getSelectedItem(), outputType.getSelectionModel().getSelectedItem(), numberInput.getText());
+                int fromBase = Calculation.NumberalSystem.parse(inputType.getSelectionModel().getSelectedItem()).base();
+                int toBase = Calculation.NumberalSystem.parse(outputType.getSelectionModel().getSelectedItem()).base();
+                String value = numberInput.getText();
 
-                text.setText(calculated);
-
+                String number = Calculation.convertNumber(fromBase,toBase,value);
+                text.setText(number);
             });
         // Gridpane - Main input, output
-
 
         borderPane.setTop(dropdowns);
         borderPane.setCenter(gridPane);

@@ -2,112 +2,66 @@ import java.util.Scanner;
 
 public class Calculation {
 
-    public static String fromTo(String from, String to, String value){
-    // Swear to god there must be a better way..
-        switch (from){
-            case "Binary":
-                switch (to){
-                    case "Binary":
-                        return isBin(value) ? value : "Not a number";
-                    case "Decimal":
-                        return binToDec(value);
-                    case "Hexadecimal":
-                        return binToHex(value);
-                    default:
-                        return "Not valid";
-                }
-            case "Decimal":
-                switch (to){
-                    case "Binary":
-                        return decToBin(value);
-                    case "Decimal":
-                        return isDec(value) ? value : "Not a number";
-                    case "Hexadecimal":
-                        return decToHex(value);
-                    default:
-                        return "Not valid";
-                }
-            case "Hexadecimal":
-                switch (to){
-                    case "Binary":
-                        return hexToBin(value);
-                    case "Decimal":
-                        return hexToDec(value);
-                    case "Hexadecimal":
-                        return isHex(value) ? value : "Not a number";
-                    default:
-                        return "Not valid";
-                }
-            default:
-                return "Not valid";
+    public enum NumberalSystem {
+
+        BINARY(2),
+        QUINARY(5),
+        OCTAL(8),
+        DECIMAL(10),
+        DUODECIMAL(12),
+        HEXADECIMAL(16),
+        MAYA(20),
+        BABYLONIAN(60);
+
+        private int base;
+
+        NumberalSystem(int base){
+            this.base = base;
+        }
+
+        public int base(){return base;}
+
+        public static NumberalSystem parse(String number){
+            if(number.contains("(")){
+                return valueOf(number.toUpperCase().substring(0,number.indexOf("("))); // cuts off the "(base)" part
+            }
+            return valueOf(number.toUpperCase());
+        }
+
+        public static String[] valuesString(){
+            String[] out = new String[values().length];
+
+            for(int i=0; i<values().length; i++){
+                out[i] = values()[i].toString();
+            }
+            return out;
+        }
+
+        public String toString(){
+
+            String thisNumber = super.toString();
+
+            return thisNumber.charAt(0)+thisNumber.toLowerCase().substring(1)+"("+base+")";
         }
     }
 
-    public static boolean isBin(String bin){
-        try{
-            Integer.parseInt(bin,2);
-            return true;
-        }catch (NumberFormatException e){return false;}
-    }
-    public static boolean isDec(String dec){
-        try{
-            Integer.parseInt(dec);
-            return true;
-        }catch (NumberFormatException e){return false;}
-    }
-    public static boolean isHex(String hex){
-        try{
-            Integer.parseInt(hex,16);
-            return true;
-        }catch (NumberFormatException e){return false;}
-    }
+    // There was a better way! :D
+    public static String convertNumber(int fromBase, int toBase, String value){
 
-    public static String binToDec(String bin){
         try {
-            return Integer.toString(Integer.parseInt(bin,2));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
-    public static String binToHex(String bin){
-        try {
-            return Integer.toHexString(Integer.parseInt(bin,2));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
-    public static String hexToDec(String hex){
-        try {
-            return Integer.toString(Integer.parseInt(hex,16));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
-    public static String hexToBin(String hex){
-        try {
-            return Integer.toBinaryString(Integer.parseInt(hex,16));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
-    public static String decToBin(String dec){
-        try {
-            return Integer.toBinaryString(Integer.parseInt(dec));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
-    public static String decToHex(String dec){
-        try {
-            return Integer.toHexString(Integer.parseInt(dec));
-        } catch (NumberFormatException e){return "Not a number";}
-    }
 
+            int decimal = Integer.parseInt(value, fromBase); // parseInt VS valueOf : parse gives int, valueOf gives Integer
 
-    public static String toBinaryString(String input){
+            return Integer.toString(decimal, toBase);
 
-        try{
-            return Integer.toBinaryString(Integer.parseInt(input));
         }
-        catch (NumberFormatException e){
-            return "Not a number.";
-        }
+        catch (NumberFormatException e){return "Not a number";}
 
     }
 
     public static void main(String[] args) {
 
-      /*  Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         System.out.println("Type \"end\" to end.");
 
         String input;
@@ -125,8 +79,13 @@ public class Calculation {
                 System.out.println("\""+input+"\"" + " is not a valid number. Number must be 32 bit integer");
             }
 
-        }while (!input.equalsIgnoreCase("end"));*/
+        }while (!input.equalsIgnoreCase("end"));
 
-        System.out.println(fromTo("Binary","Hexadecimal","11111"));
+        // System.out.println(fromTo("Binary","Hexadecimal","11111"));
+
+        System.out.println(convertNumber(10,16,"15"));
+
+        System.out.println(NumberalSystem.BABYLONIAN.toString());
+        System.out.println(NumberalSystem.parse("decimal"));
     }
 }
