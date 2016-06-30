@@ -60,7 +60,7 @@ public class NumberConverterApp extends Application {
 
             NumeralSystem from = inputSystem.getSelectionModel().getSelectedItem();
             NumeralSystem to = outputSystem.getSelectionModel().getSelectedItem();
-            String value = numberInput.getText();
+            String value = numberInput.getText().replaceAll(" ", "").trim();
 
             String number = Calculation.convertNumber(from, to, value);
             outputText.setText(number);
@@ -116,8 +116,8 @@ public class NumberConverterApp extends Application {
             ArithmeticOperation selectedOperation = operation.getValue();
             NumeralSystem selectedSystem = numeralComboBox.getValue();
 
-            String value0 = firstNumber.getText();
-            String value1 = secondNumber.getText();
+            String value0 = secondNumber.getText().replaceAll(" ", "").trim();
+            String value1 = secondNumber.getText().replaceAll(" ", "").trim();
 
             String answer = Calculation.calculate(selectedOperation, selectedSystem, value0, value1);
 
