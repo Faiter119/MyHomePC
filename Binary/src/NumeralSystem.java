@@ -15,6 +15,7 @@ public enum NumeralSystem {
 
     public int base(){return base;}
 
+    // Not used, but handy?
     public static NumeralSystem parse(String number){
         if(number.contains("(")){
             return valueOf(number.toUpperCase().substring(0,number.indexOf("(")).trim()); // cuts off the "(base)" part
@@ -22,15 +23,8 @@ public enum NumeralSystem {
         return valueOf(number.toUpperCase());
     }
 
-    public static String[] valuesString(){
-        String[] out = new String[values().length];
 
-        for(int i=0; i<values().length; i++){
-            out[i] = values()[i].toString();
-        }
-        return out;
-    }
-
+    // BINARY becomes Binary (2).
     public String toString(){
 
         String thisNumber = super.toString();

@@ -1,4 +1,6 @@
-
+/**
+ * Enum represenging the 4 basic arithmetic operations, Integer numbers only
+ */
 public enum ArithmeticOperation {
 
     ADDITION("+"){

@@ -3,6 +3,10 @@ import java.util.Scanner;
 public class Calculation {
 
     // There was a better way! :D no more switch-crap :p
+
+    /**
+     * Converts a number from a system to another system, or returns "Not a number" if input is not the correct format.
+     */
     public static String convertNumber(NumeralSystem from, NumeralSystem to, String value){
 
         try {
