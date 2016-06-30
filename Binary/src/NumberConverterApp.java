@@ -1,11 +1,13 @@
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HorizontalDirection;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,8 +21,6 @@ public class NumberConverterApp extends Application {
 
         TabPane tabPane = new TabPane();
 
-        Tab converter = converterTab();
-
         tabPane.getTabs().addAll(converterTab(), arithmeticTab());
 
         stage.setScene(new Scene(tabPane));
@@ -31,47 +31,43 @@ public class NumberConverterApp extends Application {
         BorderPane borderPane = new BorderPane();
 
         // Dropdown Menus
-        HBox dropdowns = new HBox();
-        dropdowns.setSpacing(10); dropdowns.setAlignment(Pos.CENTER); dropdowns.setPadding(new Insets(10,10,0,10));
+        HBox numeralDropdowns = new HBox();
+        numeralDropdowns.setSpacing(10); numeralDropdowns.setAlignment(Pos.CENTER); numeralDropdowns.setPadding(new Insets(10,10,0,10));
 
-        ObservableList<NumeralSystem> options = FXCollections.observableArrayList(NumeralSystem.values());
+        ObservableList<NumeralSystem> numeralSystems = FXCollections.observableArrayList(NumeralSystem.values());
 
-        ComboBox<NumeralSystem> inputType = new ComboBox<>(options);
-        ComboBox<NumeralSystem> outputType = new ComboBox<>(options);
+        ComboBox<NumeralSystem> inputSystem = new ComboBox<>(numeralSystems);
+        ComboBox<NumeralSystem> outputSystem = new ComboBox<>(numeralSystems);
 
-        inputType.setValue(NumeralSystem.DECIMAL); outputType.setValue(NumeralSystem.BINARY);
+        inputSystem.setValue(NumeralSystem.DECIMAL); outputSystem.setValue(NumeralSystem.BINARY);
 
-        dropdowns.getChildren().addAll(inputType, new Label("->"), outputType);
+        numeralDropdowns.getChildren().addAll(inputSystem, new Label("->"), outputSystem);
         // Dropdown Menus
 
         // Gridpane - Main input, output
         GridPane gridPane = new GridPane();
         gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(20,20,20,20));
 
-
-        Label inputLabel = new Label("Input: ");
         TextField numberInput = new TextField();
-        Label outputLabel = new Label("Output: ");
+
         TextField outputText = new TextField();
         outputText.setEditable(false);
 
-        gridPane.add(inputLabel,0,0);
-        gridPane.add(numberInput,1,0);
-        gridPane.add(outputLabel,0,1);
-        gridPane.add(outputText,1,1);
+        gridPane.addRow(0, new Label("Input: "),    numberInput);
+        gridPane.addRow(1, new Label("Output: "),   outputText);
 
         numberInput.setOnAction((event)->{
 
-            NumeralSystem from = inputType.getSelectionModel().getSelectedItem();
-            NumeralSystem to = outputType.getSelectionModel().getSelectedItem();
+            NumeralSystem from = inputSystem.getSelectionModel().getSelectedItem();
+            NumeralSystem to = outputSystem.getSelectionModel().getSelectedItem();
             String value = numberInput.getText();
 
-            String number = Calculation.convertNumber(from,to,value);
+            String number = Calculation.convertNumber(from, to, value);
             outputText.setText(number);
         });
         // Gridpane - Main input, output
 
-        borderPane.setTop(dropdowns);
+        borderPane.setTop(numeralDropdowns);
         borderPane.setCenter(gridPane);
 
         Tab converterTab = new Tab("Converter");
@@ -84,23 +80,21 @@ public class NumberConverterApp extends Application {
     public static Tab arithmeticTab(){
 
         BorderPane borderPane = new BorderPane();
-        borderPane.setPadding(new Insets(10));
-
 
         // Format Input
-        HBox hbox = new HBox();
+        HBox systemInput = new HBox();
+        systemInput.setSpacing(10); systemInput.setAlignment(Pos.CENTER); systemInput.setPadding(new Insets(10,10,0,10));
 
         ComboBox<NumeralSystem> numeralComboBox = new ComboBox<>();
         numeralComboBox.getItems().addAll(NumeralSystem.values());
         numeralComboBox.setValue(NumeralSystem.DECIMAL);
 
-        hbox.getChildren().add(numeralComboBox);
-        hbox.setAlignment(Pos.CENTER);
+        systemInput.getChildren().add(numeralComboBox);
         // Format Input
 
         // Center, input, output
         GridPane gridPane = new GridPane();
-        gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(10));
+        gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(20));
 
         TextField firstNumber = new TextField();
 
@@ -110,9 +104,8 @@ public class NumberConverterApp extends Application {
 
         TextField secondNumber = new TextField();
 
-        Label labelOutput = new Label("Output: "); labelOutput.setAlignment(Pos.CENTER_RIGHT);
-        TextField outPutText = new TextField();
-        outPutText.setEditable(false);
+        TextField outputText = new TextField();
+        outputText.setEditable(false);
 
         firstNumber.setOnAction(
                 secondNumber::fireEvent // Uses the event below
@@ -121,23 +114,23 @@ public class NumberConverterApp extends Application {
         secondNumber.setOnAction((event)->{
 
             ArithmeticOperation selectedOperation = operation.getValue();
-            NumeralSystem system = numeralComboBox.getValue();
+            NumeralSystem selectedSystem = numeralComboBox.getValue();
 
             String value0 = firstNumber.getText();
             String value1 = secondNumber.getText();
 
-            String answer = Calculation.calculate(selectedOperation,system,value0,value1);
+            String answer = Calculation.calculate(selectedOperation, selectedSystem, value0, value1);
 
-            outPutText.setText(answer);
+            outputText.setText(answer);
         });
 
-        gridPane.addRow(1, new Label("Input: "), firstNumber);
-        gridPane.addRow(2, new Label("Operation: "), operation);
-        gridPane.addRow(3, new Label("Input: "), secondNumber);
-        gridPane.addRow(4, labelOutput, outPutText);
+        gridPane.addRow(0, new Label("Input: "),        firstNumber);
+        gridPane.addRow(1, new Label("Operation: "),    operation);
+        gridPane.addRow(2, new Label("Input: "),        secondNumber);
+        gridPane.addRow(3, new Label("Output: "),       outputText);
         // Center, input, output
 
-        borderPane.setTop(hbox);
+        borderPane.setTop(systemInput);
         borderPane.setCenter(gridPane);
 
         Tab arithmeticTab = new Tab("Arithmetic");

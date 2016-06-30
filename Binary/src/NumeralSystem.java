@@ -17,7 +17,7 @@ public enum NumeralSystem {
 
     public static NumeralSystem parse(String number){
         if(number.contains("(")){
-            return valueOf(number.toUpperCase().substring(0,number.indexOf("("))); // cuts off the "(base)" part
+            return valueOf(number.toUpperCase().substring(0,number.indexOf("(")).trim()); // cuts off the "(base)" part
         }
         return valueOf(number.toUpperCase());
     }
@@ -35,6 +35,6 @@ public enum NumeralSystem {
 
         String thisNumber = super.toString();
 
-        return thisNumber.charAt(0)+thisNumber.toLowerCase().substring(1)+"("+base+")";
+        return thisNumber.charAt(0)+thisNumber.toLowerCase().substring(1)+" ("+base+")";
     }
 }

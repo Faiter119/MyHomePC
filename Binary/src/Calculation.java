@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Calculation {
 
-    // There was a better way! :D
+    // There was a better way! :D no more switch-crap :p
     public static String convertNumber(NumeralSystem from, NumeralSystem to, String value){
 
         try {
