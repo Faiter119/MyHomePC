@@ -52,7 +52,8 @@ public class NumberConverterApp extends Application {
         Label inputLabel = new Label("Input: ");
         TextField numberInput = new TextField();
         Label outputLabel = new Label("Output: ");
-        Text outputText = new Text();
+        TextField outputText = new TextField();
+        outputText.setEditable(false);
 
         gridPane.add(inputLabel,0,0);
         gridPane.add(numberInput,1,0);
@@ -82,40 +83,67 @@ public class NumberConverterApp extends Application {
 
     public static Tab arithmeticTab(){
 
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPadding(new Insets(10));
+
+
+        // Format Input
+        HBox hbox = new HBox();
+
+        ComboBox<NumeralSystem> numeralComboBox = new ComboBox<>();
+        numeralComboBox.getItems().addAll(NumeralSystem.values());
+        numeralComboBox.setValue(NumeralSystem.DECIMAL);
+
+        hbox.getChildren().add(numeralComboBox);
+        hbox.setAlignment(Pos.CENTER);
+        // Format Input
+
+        // Center, input, output
         GridPane gridPane = new GridPane();
-        gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(10,0,10,0));
+        gridPane.setVgap(20); gridPane.setHgap(20); gridPane.setPadding(new Insets(10));
 
         TextField firstNumber = new TextField();
 
-        ComboBox<ArithmeticOperation> operations = new ComboBox<>();
-        operations.getItems().addAll(ArithmeticOperation.values());
-        operations.setValue(ArithmeticOperation.ADDITION);
+        ComboBox<ArithmeticOperation> operation = new ComboBox<>();
+        operation.getItems().addAll(ArithmeticOperation.values());
+        operation.setValue(ArithmeticOperation.ADDITION);
 
         TextField secondNumber = new TextField();
 
-        Label labelOutput = new Label("="); labelOutput.setAlignment(Pos.BASELINE_RIGHT);
-        Text outPutText = new Text();
+        Label labelOutput = new Label("Output: "); labelOutput.setAlignment(Pos.CENTER_RIGHT);
+        TextField outPutText = new TextField();
+        outPutText.setEditable(false);
+
+        firstNumber.setOnAction(
+                secondNumber::fireEvent // Uses the event below
+        );
 
         secondNumber.setOnAction((event)->{
 
-            ArithmeticOperation operation = operations.getValue();
+            ArithmeticOperation selectedOperation = operation.getValue();
+            NumeralSystem system = numeralComboBox.getValue();
+
             String value0 = firstNumber.getText();
             String value1 = secondNumber.getText();
 
-            outPutText.setText(Calculation.calculate(operation,NumeralSystem.DECIMAL,value0,value1));
+            String answer = Calculation.calculate(selectedOperation,system,value0,value1);
+
+            outPutText.setText(answer);
         });
 
+        gridPane.addRow(1, new Label("Input: "), firstNumber);
+        gridPane.addRow(2, new Label("Operation: "), operation);
+        gridPane.addRow(3, new Label("Input: "), secondNumber);
+        gridPane.addRow(4, labelOutput, outPutText);
+        // Center, input, output
 
-        gridPane.add(firstNumber, 1, 0);
-        gridPane.add(operations,1,1);
-        gridPane.add(secondNumber, 1, 2);
-        gridPane.addRow(3, labelOutput, outPutText);
+        borderPane.setTop(hbox);
+        borderPane.setCenter(gridPane);
 
         Tab arithmeticTab = new Tab("Arithmetic");
-        arithmeticTab.setContent(gridPane);
+        arithmeticTab.setContent(borderPane);
         arithmeticTab.setClosable(false);
 
         return arithmeticTab;
-
     }
 }

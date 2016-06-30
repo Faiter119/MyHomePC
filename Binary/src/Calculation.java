@@ -9,7 +9,7 @@ public class Calculation {
 
             int decimal = Integer.parseInt(value, from.base()); // parseInt VS valueOf : parse gives int, valueOf gives Integer
 
-            return Integer.toString(decimal, to.base());
+            return Integer.toString(decimal, to.base()).toUpperCase();
 
         }
         catch (NumberFormatException e){return "Not a number";}
@@ -54,6 +54,10 @@ public class Calculation {
 
         System.out.println(calculate(ArithmeticOperation.DIVISION,NumeralSystem.DECIMAL, "10","3"));
 
+        // 10 = 1*10^1 + 0*10^0
+        // 9 = 9*10^0 = 9
+        // 29 = 2*10^1 = 20 + 9 = 29
+        // 16^1
 
     }
 }

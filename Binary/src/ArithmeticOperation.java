@@ -7,10 +7,13 @@ public enum ArithmeticOperation {
 
             String decimal0 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value0);
             String decimal1 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value1);
+            try {
 
-            return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)+Integer.parseInt(decimal1)));
+                return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)+Integer.parseInt(decimal1)));
 
-
+            } catch (NumberFormatException e) {
+                return "Not a number";
+            }
         }
     },
     SUBTRACTION("-"){
@@ -20,8 +23,11 @@ public enum ArithmeticOperation {
             String decimal0 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value0);
             String decimal1 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value1);
 
+            try{
             return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)-Integer.parseInt(decimal1)));
-
+            } catch (NumberFormatException e) {
+                return "Not a number";
+            }
 
         }
     },
@@ -31,8 +37,11 @@ public enum ArithmeticOperation {
 
             String decimal0 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value0);
             String decimal1 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value1);
-
-            return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)*Integer.parseInt(decimal1)));
+            try{
+                return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)*Integer.parseInt(decimal1)));
+            } catch (NumberFormatException e) {
+                return "Not a number";
+            }
 
 
         }
@@ -43,8 +52,11 @@ public enum ArithmeticOperation {
 
             String decimal0 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value0);
             String decimal1 = Calculation.convertNumber(system, NumeralSystem.DECIMAL, value1);
-
-            return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)/Integer.parseInt(decimal1)));
+            try{
+                return Calculation.convertNumber(NumeralSystem.DECIMAL, system, Integer.toString(Integer.parseInt(decimal0)/Integer.parseInt(decimal1)));
+            } catch (NumberFormatException e) {
+                return "Not a number";
+            }
 
 
         }

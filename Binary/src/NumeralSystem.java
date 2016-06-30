@@ -5,9 +5,7 @@ public enum NumeralSystem {
     OCTAL(8),
     DECIMAL(10),
     DUODECIMAL(12),
-    HEXADECIMAL(16),
-    MAYA(20),
-    BABYLONIAN(60);
+    HEXADECIMAL(16);
 
     private int base;
 
