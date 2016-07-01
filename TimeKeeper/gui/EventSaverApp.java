@@ -20,7 +20,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-public class JobTimesApp extends Application {
+public class EventSaverApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -47,11 +47,11 @@ public class JobTimesApp extends Application {
 
         border.setCenter(tableOfEventsPane());
         border.setRight(newEventPane());
-        border.setLeft(currentSelectedItemPane());
-        // border.setBottom(interactionOptionsPane());
+        border.setLeft(eventDetailsPane());
+        // border.setBottom(tableButtonsPane());
 
         table.getSelectionModel().selectedItemProperty().addListener((e)->{
-            border.setLeft(currentSelectedItemPane());
+            border.setLeft(eventDetailsPane());
         });
 
         stage.setScene(new Scene(border));
@@ -96,7 +96,7 @@ public class JobTimesApp extends Application {
         label.setFont(new Font("Consolas",20));
         label.setAlignment(Pos.CENTER);
 
-        vBox.getChildren().addAll(label, table, interactionOptionsPane());
+        vBox.getChildren().addAll(label, table, tableButtonsPane());
 
         return vBox;
     }
@@ -167,7 +167,7 @@ public class JobTimesApp extends Application {
 
         return vBox;
     }
-    public static Pane currentSelectedItemPane(){
+    public static Pane eventDetailsPane(){
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
@@ -225,10 +225,10 @@ public class JobTimesApp extends Application {
 
     }
 
-    public static Pane interactionOptionsPane(){
+    public static Pane tableButtonsPane(){
 
         VBox vBox = new VBox();
-        vBox.setAlignment(Pos.CENTER); vBox.setPadding(new Insets(20));
+        vBox.setAlignment(Pos.CENTER); //vBox.setPadding(new Insets(20));
 
         Label deleteLabel = new Label("Type \"delete\" to delete Event. This is final!");
         deleteLabel.setFont(new Font("Consolas",20));
@@ -277,16 +277,16 @@ public class JobTimesApp extends Application {
 
         });
 
-        Button verifyButton = new Button("Verify");
+        /*Button verifyButton = new Button("Verify");
         verifyButton.setOnAction(event -> {
 
             int index = table.getSelectionModel().getSelectedIndex();
             System.out.println("Must use CSS for colors? ;(");
 
-        });
+        });*/
 
 
-        hBox.getChildren().addAll(deleteButton, editButton, verifyButton);
+        hBox.getChildren().addAll(deleteButton, editButton);
         // Buttons
 
         vBox.getChildren().addAll(hBox,deleteTextField, deleteLabel);
@@ -350,7 +350,7 @@ public class JobTimesApp extends Application {
             table.getItems().set(table.getSelectionModel().getSelectedIndex(), currentEvent);
             table.requestFocus();
             table.getSelectionModel().select(0);
-            border.setLeft(currentSelectedItemPane());
+            border.setLeft(eventDetailsPane());
         });
 
         vBox.getChildren().addAll(label, grid, acceptButton);

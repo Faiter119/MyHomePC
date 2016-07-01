@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarOutputStream;
 
 public class Manager {
 
@@ -11,12 +12,14 @@ public class Manager {
     public static <T extends Serializable> T read(){
 
         try{
-            FileInputStream fis = new FileInputStream("./TimeKeeper/src/storage.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
+            // FileInputStream fis = new FileInputStream("./TimeKeeper/src/storage.txt");
+            InputStream stream = Manager.class.getResourceAsStream("storage.txt");
+            ObjectInputStream ois = new ObjectInputStream(stream);
 
             T obj = (T) ois.readObject();
 
-            fis.close();
+            //fis.close();
+            stream.close();
             ois.close();
 
             return obj;
@@ -32,6 +35,7 @@ public class Manager {
     public static <T extends Serializable> void write(T thing){
 
         try{
+
             FileOutputStream fos = new FileOutputStream("./TimeKeeper/src/storage.txt");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
@@ -65,11 +69,11 @@ public class Manager {
 
 
 
-        ArrayList<Event> events = new ArrayList<>();
+        /*ArrayList<Event> events = new ArrayList<>();
 
        // events.addAll(Arrays.asList(oBorn, ikeaStart, workToday));
 
-        write(events);
+        write(events);*/
 
         ArrayList<Event> events2 = read();
 
