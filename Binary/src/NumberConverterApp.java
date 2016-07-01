@@ -77,7 +77,7 @@ public class NumberConverterApp extends Application {
         return converterTab;
     }
 
-    public static Tab arithmeticTab(){
+    public static Tab arithmeticTab(){ // TODO: 30.06.2016 Different format for inputs / output?
 
         BorderPane borderPane = new BorderPane();
 

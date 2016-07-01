@@ -3,7 +3,6 @@
  */
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -26,9 +25,9 @@ public class Testing {
 
         //*
         persons.stream()
-                .filter((Person p) -> p.sex() == Person.Sex.MALE)
-                .filter((Person p) -> p.age() > 0)
-                .map(Person::name)
+                .filter((Person p) -> p.getSex() == Person.Sex.MALE)
+                .filter((Person p) -> p.getAge() > 0)
+                .map(Person::getName)
                 .forEach(System.out::println);
         /*/
         for (Person p : persons) {

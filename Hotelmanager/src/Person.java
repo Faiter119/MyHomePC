@@ -1,13 +1,8 @@
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.Period;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class Person implements Serializable, Comparable<Person>{
 
@@ -17,7 +12,7 @@ public class Person implements Serializable, Comparable<Person>{
 
         public String toString() {
             String str = super.toString();
-            return str.charAt(0) + str.substring(1,str.length()).toLowerCase();
+            return str.charAt(0) + str.substring(1).toLowerCase();
         }
     }
 
@@ -33,24 +28,26 @@ public class Person implements Serializable, Comparable<Person>{
 
     }
 
-    public String name(){       return name;}
-    public LocalDate birth(){   return birth;}
-    public Sex sex(){           return sex;}
-    public int age(){           return Period.between(birth, LocalDate.now()).getYears();}
+    public String getName(){        return name;}
+    public String getFirstName(){   return name.split(" ")[0]; }
+    public String getLastName(){    return name.split(" ")[name.split(" ").length-1];}
+    public LocalDate getBirth(){    return birth;}
+    public Sex getSex(){            return sex;}
+    public int getAge(){            return Period.between(birth, LocalDate.now()).getYears();}
 
-    public String toString(){   return name+" : "+sex+" : "+birth; }
+    public String toString(){       return name+" : "+sex+" : "+birth; }
 
     public boolean equals(Person p) {
 
-        if (!name.equals(p.name())) return false;
-        if (sex != p.sex()) return false;
-        if (age() != p.age()) return false;
+        if (!name.equals(p.getName())) return false;
+        if (sex != p.getSex()) return false;
+        if (getAge() != p.getAge()) return false;
 
         return true;
     }
 
     public int compareTo(Person o) {
-        return name.compareTo(o.name());
+        return name.compareTo(o.getName());
     }
 
     public int hashCode() { // "Indexen" i en hash-table, sykt fordi du søker raskt osv
@@ -60,7 +57,7 @@ public class Person implements Serializable, Comparable<Person>{
         for(int i=0; i<name.length() ; i++) {
             value += name.charAt(i);
         }
-        value += age();
+        value += getAge();
         value += sex.ordinal();
 
         return value;
@@ -83,16 +80,16 @@ public class Person implements Serializable, Comparable<Person>{
         );
 
         /*for (Person p : persons) {
-            System.out.println(p + " \t\t- "+p.hashCode()+" "+p.age());
+            System.out.println(p + " \t\t- "+p.hashCode()+" "+p.getAge());
         }*/
 
         /*long end = System.currentTimeMillis();
         System.out.println("\n"+(end-start));*/
 
         Person[] array = persons.stream()
-                .filter((Person p)->(p.age() >= 20))
-                .filter(p->p.sex()==Sex.MALE)
-                .sorted((p0,p1)->(-Integer.compare(p0.age(),p1.age())))
+                .filter((Person p)->(p.getAge() >= 20))
+                .filter(p->p.getSex()==Sex.MALE)
+                .sorted((p0,p1)->(-Integer.compare(p0.getAge(),p1.getAge())))
                 .toArray(Person[]::new);
 
         for(Person o : array){
