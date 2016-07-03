@@ -11,10 +11,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
 import javax.swing.*;
+import java.io.File;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -36,17 +39,25 @@ public class EventSaverApp extends Application {
 
         stage = theStage;
         events = Manager.read();
+        System.out.println(Manager.getJarFolder());
 
-        while(events == null){
-            String path = JOptionPane.showInputDialog("Input path to storage-file:");
-            Manager.setPath(path);
-            events = Manager.read();
+        if(events == null){
+            //String path = JOptionPane.showInputDialog("Input path to storage-file:");
+            events = External.noStorageFileFoundAlert(stage);
+            //JOptionPane.showMessageDialog(null, Manager.getJarFolder());
+
+            //events = External.loadNewEvents(stage);
+
+            //events = Manager.read();
+
+            if(events == null) {
+                System.out.println("give up");
+                System.exit(-1); // just give up
+            }
         }
+        
         if(events.size() == 0){
-            Event event = new Event(LocalDate.now());
-            event.setStart(LocalTime.parse(new LocalTimeStringConverter().toString(LocalTime.now())));
-            event.setDescription("You started using this application, good for you.");
-            events.add(event);
+            events = Manager.getDefaultEvents();
         }
 
         border = new BorderPane();
@@ -63,7 +74,7 @@ public class EventSaverApp extends Application {
 
             if(table.getSelectionModel().getSelectedIndices().size() == 1){
                 border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
-                stage.centerOnScreen();
+               // stage.centerOnScreen();
                 stage.sizeToScene();
 
 
@@ -299,7 +310,25 @@ public class EventSaverApp extends Application {
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER); hBox.setSpacing(20); hBox.setPadding(new Insets(20));
 
-        // Delete (confirm dialog), edit,
+        Button newEventButton = new Button("New");
+        newEventButton.setOnAction(event -> {
+            border.setRight(newEventPane());
+            stage.sizeToScene();
+            //stage.centerOnScreen();
+        });
+
+        Button editButton = new Button("Edit");
+        editButton.setOnAction(event -> {
+
+            Event currentEvent = table.getSelectionModel().getSelectedItem();
+
+            if(currentEvent != null) {
+                border.setLeft(eventEditPane());
+                stage.sizeToScene();
+                //stage.centerOnScreen();
+            }
+
+        });
 
         Button deleteButton = new Button("Delete");
         deleteButton.setOnAction((event -> {
@@ -310,37 +339,26 @@ public class EventSaverApp extends Application {
 
         }));
 
+        Button loadButton = new Button("Load from file");
+        loadButton.setOnAction(event -> {
 
-        Button editButton = new Button("Edit");
-        editButton.setOnAction(event -> {
+            ArrayList<Event> newEvents = External.loadNewEvents(stage);
+            if(newEvents != null) {
+                Manager.write(events);
+                table.getItems().removeAll(events);
+                table.getItems().addAll(newEvents);
 
-            Event currentEvent = table.getSelectionModel().getSelectedItem();
-
-            if(currentEvent != null) {
-                border.setLeft(eventEditPane());
                 stage.sizeToScene();
-                stage.centerOnScreen();
+                //stage.centerOnScreen();
             }
-
         });
 
-        Button newEventButton = new Button("New");
-        newEventButton.setOnAction(event -> {
-            border.setRight(newEventPane());
-            stage.sizeToScene();
-            stage.centerOnScreen();
+        Button backupButton = new Button("Backup to file");
+        backupButton.setOnAction(event -> {
+            External.makeBackup(stage, events);
         });
 
-        /*Button verifyButton = new Button("Verify");
-        verifyButton.setOnAction(event -> {
-
-            int index = table.getSelectionModel().getSelectedIndex();
-            System.out.println("Must use CSS for colors? ;(");
-
-        });*/
-
-
-        hBox.getChildren().addAll(newEventButton, editButton, deleteButton);
+        hBox.getChildren().addAll(newEventButton, editButton, deleteButton, loadButton, backupButton);
         // Buttons
 
         vBox.getChildren().addAll(hBox,deleteTextField, deleteLabel);
@@ -405,6 +423,8 @@ public class EventSaverApp extends Application {
             table.requestFocus();
             table.getSelectionModel().select(0);
             border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
+            stage.sizeToScene();
+            //stage.centerOnScreen();
         });
 
         vBox.getChildren().addAll(label, grid, acceptButton);

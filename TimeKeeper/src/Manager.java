@@ -1,8 +1,10 @@
+import javafx.util.converter.LocalTimeStringConverter;
+
 import java.io.*;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Properties;
 
 public class Manager {
@@ -14,6 +16,18 @@ public class Manager {
             newPath += "/storage.txt";
         }
         prop.setProperty("storagePath", newPath);
+    }
+    public static ArrayList<Event> getDefaultEvents(){
+
+        ArrayList<Event> events = new ArrayList<>();
+
+        Event event = new Event(LocalDate.now());
+        event.setStart(LocalTime.parse(new LocalTimeStringConverter().toString(LocalTime.now())));
+        event.setDescription("You started using this application, good for you.");
+
+        events.add(event);
+
+        return events;
     }
     @SuppressWarnings("unchecked")
     public static <T extends Serializable> T read(){
@@ -39,6 +53,17 @@ public class Manager {
         return null;
     }
 
+    public static <T extends Serializable> T readFile(File file){
+
+        try(FileInputStream fis = new FileInputStream(file);
+            ObjectInputStream ois = new ObjectInputStream(fis)){
+
+            return (T) ois.readObject();
+        }
+        catch (IOException | ClassNotFoundException e){return null;}
+
+    }
+
     /**
      * Writes the thing to the path, deletes everything else in the file.
      */
@@ -60,7 +85,63 @@ public class Manager {
             System.out.println("Wrote "+thing);
         }
         catch (IOException | NullPointerException e){e.printStackTrace();}
+    }
 
+    public static <T extends Serializable> void write(File file, T thing){
+
+        try(FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos)){
+
+            oos.writeObject(thing);
+
+            System.out.println("Wrote "+thing);
+        }
+        catch (IOException | NullPointerException e){e.printStackTrace();}
+    }
+
+    public static <T extends Serializable> void writeBackup(ArrayList<Event> events, File dir){
+
+        System.out.println(dir.getAbsolutePath());
+
+        if(!dir.isDirectory()) return;
+
+        File backupFile = new File(dir.getAbsolutePath()+"/BACKUP_"+LocalDate.now().toString()+".txt");
+
+        try {
+            System.out.println(backupFile.createNewFile());
+        }catch (IOException e){}
+
+        if(events == null) return;
+
+        write(backupFile, events);
+
+    }
+    public static File getJarFolder(){
+
+        File jarFile = new File(Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        File jarFolder = jarFile.getParentFile();
+
+        if(jarFolder.isDirectory()) return jarFolder;
+
+        return null;
+    }
+
+    public static File newStorageFile(){
+
+        File jarFolder = getJarFolder();
+        if(jarFolder == null) return null;
+
+        File storageFile = new File(jarFolder.getAbsolutePath()+"/storage.txt");
+        System.out.println(storageFile.getAbsolutePath());
+
+        try {
+            System.out.println("create: "+storageFile.createNewFile());
+            write(storageFile, getDefaultEvents());
+
+        }catch (IOException e){e.printStackTrace();}
+
+
+        return storageFile;
     }
 
     public static void main(String[] args) {
@@ -70,7 +151,7 @@ public class Manager {
         oBorn.setEnd(LocalTime.of(15,0));*/
         oBorn.setDescription("Olav was born.");
 
-        Event ikeaStart = new Event(LocalDate.of(2016,5,27));
+       /* Event ikeaStart = new Event(LocalDate.of(2016,5,27));
         ikeaStart.setDescription("Olav started at IKEA");
 
         Event workToday = new Event(LocalDate.of(2016,7,1));
@@ -89,7 +170,14 @@ public class Manager {
 
         for(Event e : events2){
             System.out.println(e);
-        }
+        }*/
+
+
+
+        System.out.println(Manager.getJarFolder());
+
+        System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
+        //Manager.newStorageFile();
 
 
 
