@@ -8,11 +8,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
+import javax.swing.*;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -28,16 +30,21 @@ public class EventSaverApp extends Application {
 
     private static ArrayList<Event> events;
     private static BorderPane border;
-    public void start(Stage stage) {
+    private static Stage stage;
 
+    public void start(Stage theStage) {
+
+        stage = theStage;
         events = Manager.read();
-        if(events == null){
-            System.exit(-1);
+
+        while(events == null){
+            String path = JOptionPane.showInputDialog("Input path to storage-file:");
+            Manager.setPath(path);
+            events = Manager.read();
         }
         if(events.size() == 0){
-            LocalTimeStringConverter converter = new LocalTimeStringConverter();
             Event event = new Event(LocalDate.now());
-            event.setStart(LocalTime.parse(converter.toString(LocalTime.now())));
+            event.setStart(LocalTime.parse(new LocalTimeStringConverter().toString(LocalTime.now())));
             event.setDescription("You started using this application, good for you.");
             events.add(event);
         }
@@ -46,14 +53,28 @@ public class EventSaverApp extends Application {
         border.setPadding(new Insets(20));
 
         border.setCenter(tableOfEventsPane());
-        border.setRight(newEventPane());
-        border.setLeft(eventDetailsPane());
+        //border.setRight(newEventPane());
+        border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
         // border.setBottom(tableButtonsPane());
 
-        table.getSelectionModel().selectedItemProperty().addListener((e)->{
-            border.setLeft(eventDetailsPane());
-        });
+        table.getSelectionModel().selectedItemProperty().addListener((event)->{
 
+            System.out.println("rows selected: "+table.getSelectionModel().getSelectedItems().size());
+
+            if(table.getSelectionModel().getSelectedIndices().size() == 1){
+                border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
+                stage.centerOnScreen();
+                stage.sizeToScene();
+
+
+            }
+            else {
+                border.setLeft(severalSelectedItemsPane(table.getSelectionModel().getSelectedItems().toArray(new Event[table.getSelectionModel().getSelectedItems().size()])));
+                //stage.centerOnScreen();
+                stage.sizeToScene();
+            }
+        });
+        //table.setPrefSize(250,400);
         stage.setScene(new Scene(border));
         stage.setOnCloseRequest((event)->
             Manager.write(events)
@@ -64,14 +85,19 @@ public class EventSaverApp extends Application {
     public static Pane tableOfEventsPane(){
 
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(20)); vBox.setSpacing(20);
+        vBox.setAlignment(Pos.CENTER); vBox.setPadding(new Insets(20)); vBox.setSpacing(20);
+        vBox.setMaxWidth(500); vBox.setMinWidth(500);
 
         /*GridPane grid = new GridPane();
-        grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20));*/
+        grid.setVgap(20); grid.setHgap(20); */
 
         // Table
         table = new TableView<>();
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // No dumb extra colomns
+        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        table.setMinWidth(400); table.setMaxWidth(400);
+
+
 
         TableColumn<Event, LocalDate> date = new TableColumn<>("Date");
         date.setCellValueFactory( (data) -> new SimpleObjectProperty<>(data.getValue().getDate()) ); // "data" is a CellData object made my JavaFx containing the data in the cells
@@ -88,7 +114,7 @@ public class EventSaverApp extends Application {
         table.getColumns().addAll(date, startTime, endTime, desc);
 
         table.getItems().addAll(events);
-        table.autosize();
+        //table.autosize();
         table.getSelectionModel().select(0);
         // Table
 
@@ -115,6 +141,17 @@ public class EventSaverApp extends Application {
         TextField endTextField = new TextField();
             endTextField.setTooltip(new Tooltip("Format is H, HH:MM, or H:MM | H = Hour(24-clock), M = Minute"));
         TextField descriptionTextField = new TextField();
+
+        dateTextField.setOnKeyPressed((event -> {
+            if(event.getCode() == KeyCode.ENTER) startTextField.requestFocus();
+        }));
+        startTextField.setOnKeyPressed((event -> {
+            if(event.getCode() == KeyCode.ENTER) endTextField.requestFocus();
+        }));
+        endTextField.setOnKeyPressed((event -> {
+            if(event.getCode() == KeyCode.ENTER) descriptionTextField.requestFocus();
+        }));
+
 
         // Button
         Button addNewEventButton = new Button("Add");
@@ -154,6 +191,12 @@ public class EventSaverApp extends Application {
             }
         });
         // Button
+        descriptionTextField.setOnKeyPressed((event -> {
+            if(event.getCode() == KeyCode.ENTER) addNewEventButton.requestFocus();
+        }));
+        addNewEventButton.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) addNewEventButton.fire();
+        });
 
         grid.addRow(0, new Label("Date: "), dateTextField);
         grid.addRow(1, new Label("Start (Optional): "), startTextField);
@@ -167,44 +210,43 @@ public class EventSaverApp extends Application {
 
         return vBox;
     }
-    public static Pane eventDetailsPane(){
+    public static Pane eventDetailsPane(Event event){
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
 
         GridPane grid = new GridPane();
-        grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20)); grid.setAlignment(Pos.CENTER);
+        grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20));
 
-        Event currentEvent = table.getSelectionModel().getSelectedItem(); // Current item
-        if(currentEvent == null){
-            currentEvent = new Event(LocalDate.now().plusDays(1));
-            currentEvent.setDescription("ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn");
+        if(event == null){
+            event = new Event(LocalDate.now().plusDays(1));
+            event.setDescription("ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn");
         }
         // date, start, end, desc, date created, duration?
 
-        TextField date = new TextField(currentEvent.getDate().toString());
+        TextField date = new TextField(event.getDate().toString());
         date.setEditable(false);
 
-        TextField start = new TextField(currentEvent.getStart().toString());
+        TextField start = new TextField(event.getStart().toString());
         start.setEditable(false);
 
-        TextField end = new TextField(currentEvent.getEnd().toString());
+        TextField end = new TextField(event.getEnd().toString());
         end.setEditable(false);
 
-        Duration d = currentEvent.getDuration();
+        Duration d = event.getDuration();
         TextField duration = new TextField(d.toHours()+" hours and "+((d.toMinutes())-(60*d.toHours()))+" minutes.");
         duration.setEditable(false);
 
-        TextArea desc = new TextArea(currentEvent.getDescription());
+        TextArea desc = new TextArea(event.getDescription());
         desc.setEditable(false);
 
-        TextField dateCreated = new TextField(currentEvent.getDateAdded().toString());
+        TextField dateCreated = new TextField(event.getDateAdded().toString());
         dateCreated.setEditable(false);
 
-        TextField createdBy = new TextField(currentEvent.getAddedBy());
+        TextField createdBy = new TextField(event.getAddedBy());
         createdBy.setEditable(false);
 
-        TextField history = new TextField(currentEvent.getHistory());
+        TextField history = new TextField(event.getHistory());
         history.setEditable(false);
 
         grid.addRow(0, new Label("Date: "), date);
@@ -223,12 +265,14 @@ public class EventSaverApp extends Application {
 
         return vBox;
 
+
     }
 
     public static Pane tableButtonsPane(){
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); //vBox.setPadding(new Insets(20));
+        vBox.setPrefWidth(500);
 
         Label deleteLabel = new Label("Type \"delete\" to delete Event. This is final!");
         deleteLabel.setFont(new Font("Consolas",20));
@@ -249,7 +293,6 @@ public class EventSaverApp extends Application {
             deleteLabel.setVisible(false);
             table.requestFocus();
         });
-
 
 
         // Buttons
@@ -273,8 +316,19 @@ public class EventSaverApp extends Application {
 
             Event currentEvent = table.getSelectionModel().getSelectedItem();
 
-            if(currentEvent != null) border.setLeft(eventEditPane());
+            if(currentEvent != null) {
+                border.setLeft(eventEditPane());
+                stage.sizeToScene();
+                stage.centerOnScreen();
+            }
 
+        });
+
+        Button newEventButton = new Button("New");
+        newEventButton.setOnAction(event -> {
+            border.setRight(newEventPane());
+            stage.sizeToScene();
+            stage.centerOnScreen();
         });
 
         /*Button verifyButton = new Button("Verify");
@@ -286,7 +340,7 @@ public class EventSaverApp extends Application {
         });*/
 
 
-        hBox.getChildren().addAll(deleteButton, editButton);
+        hBox.getChildren().addAll(newEventButton, editButton, deleteButton);
         // Buttons
 
         vBox.getChildren().addAll(hBox,deleteTextField, deleteLabel);
@@ -350,13 +404,51 @@ public class EventSaverApp extends Application {
             table.getItems().set(table.getSelectionModel().getSelectedIndex(), currentEvent);
             table.requestFocus();
             table.getSelectionModel().select(0);
-            border.setLeft(eventDetailsPane());
+            border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
         });
 
         vBox.getChildren().addAll(label, grid, acceptButton);
 
         return vBox;
 
+    }
+    public static Pane severalSelectedItemsPane(Event[] events){
+
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
+        vBox.setMaxWidth(500);
+
+        Label label = new Label("Several Events");
+        label.setFont(new Font("Consolas",20));
+
+        GridPane eventsGrid = new GridPane();
+
+        for(int i=0; i<events.length; i++){
+            Event event = events[i];
+            Duration d = event.getDuration();
+
+            TextField date = new TextField(event.getDate().toString());
+            date.setEditable(false);
+            TextField time = new TextField(d.toHours()+" hours and "+((d.toMinutes())-(60*d.toHours()))+" minutes.");
+            time.setEditable(false);
+            //date.setPrefWidth(200);
+            eventsGrid.addRow(i, date, time);
+            //vBox.getChildren().add(new TextField(events[i].toString()));
+        }
+
+
+        //Duration total = events[1].getDuration();
+        Duration d = Duration.ZERO;
+        for(Event e : events){
+            d = d.plus(e.getDuration());
+        }
+
+        TextField duration = new TextField(d.toHours()+" hours and "+((d.toMinutes())-(60*d.toHours()))+" minutes.");
+        duration.setEditable(false);
+
+        vBox.getChildren().addAll(label, eventsGrid, duration);
+
+        return vBox;
     }
 
     private static void clearAll(TextInputControl ... items){

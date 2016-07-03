@@ -3,40 +3,53 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.jar.JarOutputStream;
+import java.util.Properties;
 
 public class Manager {
 
+    private static Properties prop = new Properties();
+
+    public static void setPath(String newPath){
+        if(!newPath.contains(".txt")){
+            newPath += "/storage.txt";
+        }
+        prop.setProperty("storagePath", newPath);
+    }
     @SuppressWarnings("unchecked")
     public static <T extends Serializable> T read(){
+        try {
+            prop.load(Manager.class.getResourceAsStream("config.properties"));
+        }catch (IOException ex){return null;}
 
         try{
-            // FileInputStream fis = new FileInputStream("./TimeKeeper/src/storage.txt");
-            InputStream stream = Manager.class.getResourceAsStream("storage.txt");
-            ObjectInputStream ois = new ObjectInputStream(stream);
+            FileInputStream fis = new FileInputStream(prop.getProperty("storagePath"));
+            //InputStream stream = Manager.class.getResourceAsStream("C:/Users/Olav Husby/IdeaProjects/MyProjects/out/artifacts/TimeKeeper_jar/storage.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
 
             T obj = (T) ois.readObject();
 
-            //fis.close();
-            stream.close();
+            fis.close();
+            //stream.close();
             ois.close();
 
             return obj;
         }
-        catch (IOException | ClassNotFoundException e){e.printStackTrace();}
+        catch (IOException | ClassNotFoundException | NullPointerException e){e.printStackTrace();}
 
         return null;
     }
 
     /**
-     * Writes the thing to the file, deletes everything else in the file.
+     * Writes the thing to the path, deletes everything else in the file.
      */
     public static <T extends Serializable> void write(T thing){
+        try {
+            prop.load(Manager.class.getResourceAsStream("config.properties"));
+        }catch (IOException ex){return;}
 
         try{
 
-            FileOutputStream fos = new FileOutputStream("./TimeKeeper/src/storage.txt");
+            FileOutputStream fos = new FileOutputStream(prop.getProperty("storagePath"));
             ObjectOutputStream oos = new ObjectOutputStream(fos);
 
             oos.writeObject(thing);
@@ -46,7 +59,7 @@ public class Manager {
 
             System.out.println("Wrote "+thing);
         }
-        catch (IOException e){e.printStackTrace();}
+        catch (IOException | NullPointerException e){e.printStackTrace();}
 
     }
 
@@ -66,14 +79,11 @@ public class Manager {
         workToday.setEnd(LocalTime.of(10,0));
         workToday.setDate(LocalDate.now());
 
+        ArrayList<Event> events = new ArrayList<>();
 
+        events.addAll(Arrays.asList(oBorn, ikeaStart, workToday));
 
-
-        /*ArrayList<Event> events = new ArrayList<>();
-
-       // events.addAll(Arrays.asList(oBorn, ikeaStart, workToday));
-
-        write(events);*/
+        //write(events);
 
         ArrayList<Event> events2 = read();
 
