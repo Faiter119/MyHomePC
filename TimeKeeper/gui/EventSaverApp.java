@@ -4,6 +4,7 @@
 
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EventSaverApp extends Application {
 
@@ -68,9 +70,15 @@ public class EventSaverApp extends Application {
         border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
         // border.setBottom(tableButtonsPane());
 
-        table.getSelectionModel().selectedItemProperty().addListener((event)->{
+        table.getSelectionModel().selectedIndexProperty().addListener((event)->{
 
-            System.out.println("rows selected: "+table.getSelectionModel().getSelectedItems().size());
+            ObservableList<Event> eventObservableList = table.getSelectionModel().getSelectedItems();
+
+            /*for (Event e : eventObservableList){
+                System.out.println("Selected: "+e);
+            }*/
+
+            //System.out.println("rows selected: "+table.getSelectionModel().getSelectedItems().size());
 
             if(table.getSelectionModel().getSelectedIndices().size() == 1){
                 border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
