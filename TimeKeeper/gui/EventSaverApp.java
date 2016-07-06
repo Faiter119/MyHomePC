@@ -9,15 +9,21 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.converter.LocalTimeStringConverter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.time.DateTimeException;
 import java.time.Duration;
@@ -26,8 +32,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class EventSaverApp extends Application {
+public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
 
     public static void main(String[] args) {
         launch(args);
@@ -53,7 +60,7 @@ public class EventSaverApp extends Application {
             //events = Manager.read();
 
             if(events == null) {
-                System.out.println("give up");
+                System.out.println("i give up");
                 System.exit(-1); // just give up
             }
         }
@@ -67,28 +74,36 @@ public class EventSaverApp extends Application {
 
         border.setCenter(tableOfEventsPane());
         //border.setRight(newEventPane());
-        border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
-        // border.setBottom(tableButtonsPane());
+        //border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
 
         table.getSelectionModel().selectedIndexProperty().addListener((event)->{
 
-            int countOfRowsSelected = table.getSelectionModel().getSelectedIndices().size();
+            List<Event> selectedEvents = table.getSelectionModel().getSelectedItems();
+            int countOfRowsSelected = selectedEvents.size(); //table.getSelectionModel().getSelectedIndices().size();
 
             if(countOfRowsSelected <= 0){
+
                 border.setLeft(null);
-                stage.sizeToScene();
+
+                //stage.sizeToScene();
             }
-            else if(countOfRowsSelected == 1){
+            if(countOfRowsSelected == 1){
+
                 border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
+
                // stage.centerOnScreen();
-                stage.sizeToScene();
+                //stage.sizeToScene();
 
             }
-            else{
-                border.setLeft(severalSelectedItemsPane(table.getSelectionModel().getSelectedItems().toArray(new Event[table.getSelectionModel().getSelectedItems().size()])));
+            if(countOfRowsSelected > 1){
+
+                border.setLeft(severalSelectedItemsPane(selectedEvents));
+
                 //stage.centerOnScreen();
-                stage.sizeToScene();
+                //stage.sizeToScene();
             }
+            stage.sizeToScene(); // FIXME: 07.07.2016 Jittering
+
         });
         //table.setPrefSize(250,400);
         stage.setScene(new Scene(border));
@@ -333,8 +348,14 @@ public class EventSaverApp extends Application {
 
                 if(deleteTextField.getText().equalsIgnoreCase("delete")){
 
-                    events.remove(table.getSelectionModel().getSelectedItem());
-                    table.getItems().remove(table.getSelectionModel().getSelectedItem());
+                    ObservableList<Event> selectedEvents = table.getSelectionModel().getSelectedItems();
+                    System.out.println(Arrays.toString(selectedEvents.toArray()));
+
+                    for(Event e : selectedEvents) { // FIXME: 07.07.2016
+                        System.out.println(e.toString());
+                        events.remove(e);
+                        table.getItems().remove(e);
+                    }
 
                 }
                 deleteTextField.clear();
@@ -448,7 +469,7 @@ public class EventSaverApp extends Application {
         return vBox;
 
     }
-    public static Pane severalSelectedItemsPane(Event[] events){
+    public static Pane severalSelectedItemsPane(List<Event> events){
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
@@ -459,8 +480,8 @@ public class EventSaverApp extends Application {
 
         GridPane eventsGrid = new GridPane();
 
-        for(int i=0; i<events.length; i++){
-            Event event = events[i];
+        for(int i=0; i<events.size(); i++){
+            Event event = events.get(i);
             Duration d = event.getDuration();
 
             TextField date = new TextField(event.getDate().toString());
