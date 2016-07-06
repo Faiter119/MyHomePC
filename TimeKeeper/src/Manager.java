@@ -1,6 +1,8 @@
 import javafx.util.converter.LocalTimeStringConverter;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -99,31 +101,30 @@ public class Manager {
         catch (IOException | NullPointerException e){e.printStackTrace();}
     }
 
-    public static <T extends Serializable> void writeBackup(ArrayList<Event> events, File dir){
+    public static <T extends Serializable> void writeBackup(File dir, T toBeWriten){
 
         System.out.println(dir.getAbsolutePath());
-
-        if(!dir.isDirectory()) return;
 
         File backupFile = new File(dir.getAbsolutePath()+"/BACKUP_"+LocalDate.now().toString()+".txt");
 
         try {
             System.out.println(backupFile.createNewFile());
-        }catch (IOException e){}
+        }catch (IOException e){e.printStackTrace(); return;}
 
-        if(events == null) return;
+        if(toBeWriten == null) return;
 
-        write(backupFile, events);
+        write(backupFile, toBeWriten);
 
     }
-    public static File getJarFolder(){
+    public static File getJarFolder() {
 
-        File jarFile = new File(Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        File jarFolder = jarFile.getParentFile();
+        String jarFilePath = Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
-        if(jarFolder.isDirectory()) return jarFolder;
+        File jarFile = new File(jarFilePath);
 
-        return null;
+        String jarFolderPath = jarFile.getParent();
+
+        return new File(jarFolderPath); // Fucking isDirectory crap il rek your mum
     }
 
     public static File newStorageFile(){

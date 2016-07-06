@@ -117,7 +117,6 @@ public class EventSaverApp extends Application {
         table.setMinWidth(400); table.setMaxWidth(400);
 
 
-
         TableColumn<Event, LocalDate> date = new TableColumn<>("Date");
         date.setCellValueFactory( (data) -> new SimpleObjectProperty<>(data.getValue().getDate()) ); // "data" is a CellData object made my JavaFx containing the data in the cells
 
@@ -135,6 +134,7 @@ public class EventSaverApp extends Application {
         table.getItems().addAll(events);
         //table.autosize();
         table.getSelectionModel().select(0);
+
         // Table
 
         Label label = new Label("Events");

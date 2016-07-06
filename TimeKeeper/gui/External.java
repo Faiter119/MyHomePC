@@ -50,9 +50,12 @@ public class External {
 
         File selectedDir = chooser.showDialog(stage);
 
-        if(selectedDir == null) return;
-
-        Manager.writeBackup(events, selectedDir);
+        if(selectedDir == null){
+            Manager.writeBackup(Manager.getJarFolder(), events);
+        }
+        else {
+            Manager.writeBackup(selectedDir, events);
+        }
     }
     public static ArrayList<Event> loadNewEvents(Stage stage){
 
