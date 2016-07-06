@@ -33,28 +33,18 @@ public class Manager {
     }
     @SuppressWarnings("unchecked")
     public static <T extends Serializable> T read(){
-        try {
+
+        /*try {
             prop.load(Manager.class.getResourceAsStream("config.properties"));
-        }catch (IOException ex){return null;}
+        }catch (IOException ex){return null;}*/
 
-        try{
-            FileInputStream fis = new FileInputStream(prop.getProperty("storagePath"));
-            //InputStream stream = Manager.class.getResourceAsStream("C:/Users/Olav Husby/IdeaProjects/MyProjects/out/artifacts/TimeKeeper_jar/storage.txt");
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        File jarFolder = getJarFolder();
 
-            T obj = (T) ois.readObject();
+        File storage = new File(jarFolder,"storage.txt");
 
-            fis.close();
-            //stream.close();
-            ois.close();
-
-            return obj;
-        }
-        catch (IOException | ClassNotFoundException | NullPointerException e){e.printStackTrace();}
-
-        return null;
+        return readFile(storage);
     }
-
+    @SuppressWarnings("unchecked")
     public static <T extends Serializable> T readFile(File file){
 
         try(FileInputStream fis = new FileInputStream(file);
@@ -74,15 +64,10 @@ public class Manager {
             prop.load(Manager.class.getResourceAsStream("config.properties"));
         }catch (IOException ex){return;}
 
-        try{
-
-            FileOutputStream fos = new FileOutputStream(prop.getProperty("storagePath"));
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
+        try(FileOutputStream fos = new FileOutputStream(prop.getProperty("storagePath"));
+            ObjectOutputStream oos = new ObjectOutputStream(fos)){
 
             oos.writeObject(thing);
-
-            oos.close();
-            fos.close();
 
             System.out.println("Wrote "+thing);
         }
@@ -103,6 +88,8 @@ public class Manager {
 
     public static <T extends Serializable> void writeBackup(File dir, T toBeWriten){
 
+        if(toBeWriten == null) return;
+
         System.out.println(dir.getAbsolutePath());
 
         File backupFile = new File(dir.getAbsolutePath()+"/BACKUP_"+LocalDate.now().toString()+".txt");
@@ -111,20 +98,33 @@ public class Manager {
             System.out.println(backupFile.createNewFile());
         }catch (IOException e){e.printStackTrace(); return;}
 
-        if(toBeWriten == null) return;
 
         write(backupFile, toBeWriten);
 
     }
+
+    /**
+     * Gets folder from where Jar / class files are ran.
+     */
     public static File getJarFolder() {
 
-        String jarFilePath = Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-
+        /*String jarFilePath = Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File jarFile = new File(jarFilePath);
 
         String jarFolderPath = jarFile.getParent();
+        File jarFolder = new File(jarFolderPath);
 
-        return new File(jarFolderPath); // Fucking isDirectory crap il rek your mum
+        if(jarFolder.isDirectory()) return jarFolder;*/
+
+        //
+
+        File jarFolder = new File("."); // u make yoke, 2ez4rtz
+
+        if(jarFolder.isDirectory()) return jarFolder;
+
+        return null;
+
+        //
     }
 
     public static File newStorageFile(){
@@ -132,15 +132,15 @@ public class Manager {
         File jarFolder = getJarFolder();
         if(jarFolder == null) return null;
 
-        File storageFile = new File(jarFolder.getAbsolutePath()+"/storage.txt");
+        File storageFile = new File(jarFolder, "storage.txt");
         System.out.println(storageFile.getAbsolutePath());
 
         try {
-            System.out.println("create: "+storageFile.createNewFile());
+            if(!storageFile.createNewFile()) return null;
+
             write(storageFile, getDefaultEvents());
 
         }catch (IOException e){e.printStackTrace();}
-
 
         return storageFile;
     }
@@ -176,12 +176,11 @@ public class Manager {
 
 
         System.out.println(Manager.getJarFolder());
+        System.out.println(newStorageFile());
 
-        System.out.println(Paths.get(".").toAbsolutePath().normalize().toString());
         //Manager.newStorageFile();
 
 
 
     }
-
 }

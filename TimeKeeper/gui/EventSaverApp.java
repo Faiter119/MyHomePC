@@ -294,7 +294,7 @@ public class EventSaverApp extends Application {
         vBox.setPrefWidth(500);
 
         Label deleteLabel = new Label("Type \"delete\" to delete Event. This is final!");
-        deleteLabel.setFont(new Font("Consolas",20));
+        deleteLabel.setFont(new Font("Consolas",15));
         deleteLabel.setVisible(false);
 
         TextField deleteTextField = new TextField(); // Write "delete" to delete, security
