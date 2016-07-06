@@ -42,6 +42,8 @@ public class Manager {
 
         File storage = new File(jarFolder,"storage.txt");
 
+        System.out.println("reading? "+storage.exists()+" "+storage.isFile());
+
         return readFile(storage);
     }
     @SuppressWarnings("unchecked")
@@ -58,7 +60,6 @@ public class Manager {
 
     /**
      * Writes the thing to the path, deletes everything else in the file.
-     */
     public static <T extends Serializable> void write(T thing){
         try {
             prop.load(Manager.class.getResourceAsStream("config.properties"));
@@ -72,7 +73,7 @@ public class Manager {
             System.out.println("Wrote "+thing);
         }
         catch (IOException | NullPointerException e){e.printStackTrace();}
-    }
+    }*/
 
     public static <T extends Serializable> void write(File file, T thing){
 
@@ -89,6 +90,7 @@ public class Manager {
     public static <T extends Serializable> void writeBackup(File dir, T toBeWriten){
 
         if(toBeWriten == null) return;
+        if(!dir.isDirectory()) return;
 
         System.out.println(dir.getAbsolutePath());
 
@@ -96,11 +98,9 @@ public class Manager {
 
         try {
             System.out.println(backupFile.createNewFile());
+            write(backupFile, toBeWriten);
+
         }catch (IOException e){e.printStackTrace(); return;}
-
-
-        write(backupFile, toBeWriten);
-
     }
 
     /**
@@ -127,6 +127,9 @@ public class Manager {
         //
     }
 
+    /**
+     * Makes a new file named "storage.txt" in the same folder as the jar
+     */
     public static File newStorageFile(){
 
         File jarFolder = getJarFolder();

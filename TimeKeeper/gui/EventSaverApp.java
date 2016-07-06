@@ -72,22 +72,19 @@ public class EventSaverApp extends Application {
 
         table.getSelectionModel().selectedIndexProperty().addListener((event)->{
 
-            ObservableList<Event> eventObservableList = table.getSelectionModel().getSelectedItems();
+            int countOfRowsSelected = table.getSelectionModel().getSelectedIndices().size();
 
-            /*for (Event e : eventObservableList){
-                System.out.println("Selected: "+e);
-            }*/
-
-            //System.out.println("rows selected: "+table.getSelectionModel().getSelectedItems().size());
-
-            if(table.getSelectionModel().getSelectedIndices().size() == 1){
+            if(countOfRowsSelected <= 0){
+                border.setLeft(null);
+                stage.sizeToScene();
+            }
+            else if(countOfRowsSelected == 1){
                 border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
                // stage.centerOnScreen();
                 stage.sizeToScene();
 
-
             }
-            else {
+            else{
                 border.setLeft(severalSelectedItemsPane(table.getSelectionModel().getSelectedItems().toArray(new Event[table.getSelectionModel().getSelectedItems().size()])));
                 //stage.centerOnScreen();
                 stage.sizeToScene();
@@ -96,7 +93,7 @@ public class EventSaverApp extends Application {
         //table.setPrefSize(250,400);
         stage.setScene(new Scene(border));
         stage.setOnCloseRequest((event)->
-            Manager.write(events)
+            Manager.write(new File(Manager.getJarFolder(),"storage.txt"), events)
         );
         stage.show();
     }
@@ -133,7 +130,7 @@ public class EventSaverApp extends Application {
 
         table.getItems().addAll(events);
         //table.autosize();
-        table.getSelectionModel().select(0);
+        //table.getSelectionModel().select(0);
 
         // Table
 
@@ -153,15 +150,19 @@ public class EventSaverApp extends Application {
 
         grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20)); grid.setAlignment(Pos.CENTER);
 
-        TextField dateTextField = new TextField(LocalDate.now().toString());
-            dateTextField.setTooltip(new Tooltip("Format is YYYY-MM-DD"));
+        DatePicker datePicker = new DatePicker();
+        datePicker.setValue(LocalDate.now());
+        datePicker.setEditable(false);
+
+       /* TextField dateTextField = new TextField(LocalDate.now().toString());
+            dateTextField.setTooltip(new Tooltip("Format is YYYY-MM-DD"));*/
         TextField startTextField = new TextField();
             startTextField.setTooltip(new Tooltip("Format is H, HH:MM, or H:MM | H = Hour(24-clock), M = Minute"));
         TextField endTextField = new TextField();
             endTextField.setTooltip(new Tooltip("Format is H, HH:MM, or H:MM | H = Hour(24-clock), M = Minute"));
         TextField descriptionTextField = new TextField();
 
-        dateTextField.setOnKeyPressed((event -> {
+        datePicker.setOnKeyPressed((event -> {
             if(event.getCode() == KeyCode.ENTER) startTextField.requestFocus();
         }));
         startTextField.setOnKeyPressed((event -> {
@@ -179,12 +180,11 @@ public class EventSaverApp extends Application {
         addNewEventButton.setOnAction((e)->{
 
             try{
-                String dateString = dateTextField.getText();
                 String startString = startTextField.getText();
                 String endString = endTextField.getText();
                 String description = descriptionTextField.getText();
 
-                LocalDate date = LocalDate.parse(dateString);
+                LocalDate date = datePicker.getValue();
                 LocalTime start;
                 LocalTime end;
 
@@ -203,10 +203,10 @@ public class EventSaverApp extends Application {
                 events.add(event);
                 table.getItems().add(event);
                 clearAll(startTextField, endTextField, descriptionTextField);
-                dateTextField.setText(LocalDate.now().toString());
+
             }
             catch (DateTimeParseException ex){
-                dateTextField.clear();
+                datePicker.setValue(LocalDate.now());
             }
         });
         // Button
@@ -217,7 +217,7 @@ public class EventSaverApp extends Application {
             if(event.getCode() == KeyCode.ENTER) addNewEventButton.fire();
         });
 
-        grid.addRow(0, new Label("Date: "), dateTextField);
+        grid.addRow(0, new Label("Date: ")/*dateTextField*/, datePicker);
         grid.addRow(1, new Label("Start (Optional): "), startTextField);
         grid.addRow(2, new Label("End (Optional): "), endTextField);
         grid.addRow(3, new Label("Description (Optional): "), descriptionTextField);
@@ -231,16 +231,14 @@ public class EventSaverApp extends Application {
     }
     public static Pane eventDetailsPane(Event event){
 
+        if(event == null) return null;
+
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
 
         GridPane grid = new GridPane();
         grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20));
 
-        if(event == null){
-            event = new Event(LocalDate.now().plusDays(1));
-            event.setDescription("ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn");
-        }
         // date, start, end, desc, date created, duration?
 
         TextField date = new TextField(event.getDate().toString());
@@ -293,87 +291,99 @@ public class EventSaverApp extends Application {
         vBox.setAlignment(Pos.CENTER); //vBox.setPadding(new Insets(20));
         vBox.setPrefWidth(500);
 
-        Label deleteLabel = new Label("Type \"delete\" to delete Event. This is final!");
-        deleteLabel.setFont(new Font("Consolas",15));
-        deleteLabel.setVisible(false);
 
-        TextField deleteTextField = new TextField(); // Write "delete" to delete, security
-        deleteTextField.setVisible(false);
-        deleteTextField.setOnAction(event -> {
-
-            if(deleteTextField.getText().equalsIgnoreCase("delete")){
-
-                events.remove(table.getSelectionModel().getSelectedItem());
-                table.getItems().remove(table.getSelectionModel().getSelectedItem());
-
-            }
-            deleteTextField.clear();
-            deleteTextField.setVisible(false);
-            deleteLabel.setVisible(false);
-            table.requestFocus();
-        });
 
 
         // Buttons
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER); hBox.setSpacing(20); hBox.setPadding(new Insets(20));
 
-        Button newEventButton = new Button("New");
-        newEventButton.setOnAction(event -> {
-            border.setRight(newEventPane());
-            stage.sizeToScene();
-            //stage.centerOnScreen();
-        });
-
-        Button editButton = new Button("Edit");
-        editButton.setOnAction(event -> {
-
-            Event currentEvent = table.getSelectionModel().getSelectedItem();
-
-            if(currentEvent != null) {
-                border.setLeft(eventEditPane());
+        // New
+            Button newEventButton = new Button("New");
+            newEventButton.setOnAction(event -> {
+                border.setRight(newEventPane());
                 stage.sizeToScene();
                 //stage.centerOnScreen();
-            }
+            });
+        // New
 
-        });
+        // Edit
+            Button editButton = new Button("Edit");
+            editButton.setOnAction(event -> {
 
-        Button deleteButton = new Button("Delete");
-        deleteButton.setOnAction((event -> {
+                Event currentEvent = table.getSelectionModel().getSelectedItem();
 
-            deleteTextField.setVisible(true);
-            deleteLabel.setVisible(true);
-            deleteTextField.requestFocus();
+                if(currentEvent != null) {
+                    border.setLeft(eventEditPane(table.getSelectionModel().getSelectedItem()));
+                    stage.sizeToScene();
+                    //stage.centerOnScreen();
+                }
 
-        }));
+            });
+        // Edit
 
-        Button loadButton = new Button("Load from file");
-        loadButton.setOnAction(event -> {
+        // Delete
+            Label deleteLabel = new Label("Type \"delete\" to delete Event. This is final!");
+            deleteLabel.setFont(new Font("Consolas",15));
+            deleteLabel.setVisible(false);
 
-            ArrayList<Event> newEvents = External.loadNewEvents(stage);
-            if(newEvents != null) {
-                Manager.write(events);
-                table.getItems().removeAll(events);
-                table.getItems().addAll(newEvents);
+            TextField deleteTextField = new TextField(); // Write "delete" to delete, security
+            deleteTextField.setVisible(false);
+            deleteTextField.setOnAction(event -> {
 
-                stage.sizeToScene();
-                //stage.centerOnScreen();
-            }
-        });
+                if(deleteTextField.getText().equalsIgnoreCase("delete")){
 
-        Button backupButton = new Button("Backup to file");
-        backupButton.setOnAction(event -> {
-            External.makeBackup(stage, events);
-        });
+                    events.remove(table.getSelectionModel().getSelectedItem());
+                    table.getItems().remove(table.getSelectionModel().getSelectedItem());
+
+                }
+                deleteTextField.clear();
+                deleteTextField.setVisible(false);
+                deleteLabel.setVisible(false);
+                table.requestFocus();
+            });
+
+            Button deleteButton = new Button("Delete");
+            deleteButton.setOnAction((event -> {
+
+                deleteTextField.setVisible(true);
+                deleteLabel.setVisible(true);
+                deleteTextField.requestFocus();
+
+            }));
+        // Delete
+
+        // Load
+            Button loadButton = new Button("Load from file");
+            loadButton.setOnAction(event -> {
+
+                ArrayList<Event> newEvents = External.loadNewEvents(stage);
+                if(newEvents != null) {
+                    Manager.write(new File(Manager.getJarFolder(),"storage.txt"), events);
+                    table.getItems().removeAll(events);
+                    table.getItems().addAll(newEvents);
+
+                    stage.sizeToScene();
+                    //stage.centerOnScreen();
+                }
+            });
+        // Load
+
+        // Backup
+            Button backupButton = new Button("Backup to file");
+            backupButton.setOnAction(event -> {
+                External.makeBackup(stage, events);
+            });
+        // Backup
 
         hBox.getChildren().addAll(newEventButton, editButton, deleteButton, loadButton, backupButton);
         // Buttons
 
-        vBox.getChildren().addAll(hBox,deleteTextField, deleteLabel);
+        vBox.getChildren().addAll(hBox, deleteTextField, deleteLabel);
         return vBox;
 
     }
-    public static Pane eventEditPane(){
+    public static Pane eventEditPane(Event event){
 
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER); vBox.setSpacing(20); vBox.setPadding(new Insets(20));
@@ -381,20 +391,18 @@ public class EventSaverApp extends Application {
         GridPane grid = new GridPane();
         grid.setVgap(20); grid.setHgap(20); grid.setPadding(new Insets(20)); grid.setAlignment(Pos.CENTER);
 
-        Event currentEvent = table.getSelectionModel().getSelectedItem(); // Current item
-
         // date, start, end, desc, date created,
 
-        String dateOrig = currentEvent.getDate().toString();
+        String dateOrig = event.getDate().toString();
         TextField date = new TextField(dateOrig);
 
-        String startOrig = currentEvent.getStart().toString();
+        String startOrig = event.getStart().toString();
         TextField start = new TextField(startOrig);
 
-        String endOrig = currentEvent.getEnd().toString();
+        String endOrig = event.getEnd().toString();
         TextField end = new TextField(endOrig);
 
-        String descOrig = currentEvent.getDescription();
+        String descOrig = event.getDescription();
         TextArea desc = new TextArea(descOrig);
 
         grid.addRow(0, new Label("Date: "), date);
@@ -406,7 +414,7 @@ public class EventSaverApp extends Application {
         label.setFont(new Font("Consolas",20));
 
         Button acceptButton = new Button("Accept");
-        acceptButton.setOnAction(event -> {
+        acceptButton.setOnAction(e -> {
 
             String dateNew = date.getText();
             String startNew = start.getText();
@@ -415,19 +423,19 @@ public class EventSaverApp extends Application {
 
             if(!dateOrig.equals(dateNew)){
                 try {
-                    currentEvent.setDate(LocalDate.parse(dateNew));
-                } catch (DateTimeParseException e){date.setText(dateOrig);}
+                    event.setDate(LocalDate.parse(dateNew));
+                } catch (DateTimeParseException ex){date.setText(dateOrig);}
             }
             if(!startOrig.equals(startNew)){
-                currentEvent.setStart(parse(startNew));
+                event.setStart(parse(startNew));
             }
             if(!endOrig.equals(endNew)){
-                currentEvent.setEnd(parse(endNew));
+                event.setEnd(parse(endNew));
             }
             if(!descOrig.equals(descNew)){
-                currentEvent.setDescription(descNew);
+                event.setDescription(descNew);
             }
-            table.getItems().set(table.getSelectionModel().getSelectedIndex(), currentEvent);
+            table.getItems().set(table.getSelectionModel().getSelectedIndex(), event);
             table.requestFocus();
             table.getSelectionModel().select(0);
             border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
@@ -485,7 +493,12 @@ public class EventSaverApp extends Application {
             item.clear();
         }
     }
+    // Takes badly formated time and makes it into localtime by magic
     private static LocalTime parse(String time){
+        time = time.trim();
+        time = time.replaceAll("[ .]",":");
+        time = time.replaceAll("-",":");
+        time = time.replaceAll(" ",":");
 
         try {
             if (time.contains(":")) {

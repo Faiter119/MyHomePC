@@ -12,9 +12,10 @@ import java.util.Optional;
 
 public class External {
 
+    @SuppressWarnings("unchecked")
     public static <T extends Serializable> T noStorageFileFoundAlert(Stage stage){
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText("No storage-file found!");
         alert.setContentText("Choose your option.");
 
@@ -47,6 +48,7 @@ public class External {
     public static void makeBackup(Stage stage, ArrayList<Event> events){
 
         DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setInitialDirectory(Manager.getJarFolder());
 
         File selectedDir = chooser.showDialog(stage);
 
@@ -60,6 +62,7 @@ public class External {
     public static ArrayList<Event> loadNewEvents(Stage stage){
 
         FileChooser chooser = new FileChooser();
+        chooser.setInitialDirectory(Manager.getJarFolder());
 
         File loadedFile = chooser.showOpenDialog(stage);
 
