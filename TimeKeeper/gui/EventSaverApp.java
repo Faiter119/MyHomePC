@@ -53,11 +53,8 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         if(events == null){
             //String path = JOptionPane.showInputDialog("Input path to storage-file:");
             events = External.noStorageFileFoundAlert(stage);
-            //JOptionPane.showMessageDialog(null, Manager.getJarFolder());
 
             //events = External.loadNewEvents(stage);
-
-            //events = Manager.read();
 
             if(events == null) {
                 System.out.println("i give up");

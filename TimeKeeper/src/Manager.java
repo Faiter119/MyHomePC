@@ -126,6 +126,29 @@ public class Manager {
 
         //
     }
+    public static File getJarFolderTEST() {
+
+        String classFolderPath = Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+
+        File file = new File(Manager.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        System.out.println("exists: "+file.exists()+"\nisFile: "+file.isFile()+"\nisDir: "+file.isDirectory()+"\nPath: "+file.getAbsolutePath());
+
+        File classFolder = new File(classFolderPath);
+        System.out.println("exists: "+classFolder.exists()+"\nisFile: "+classFolder.isFile()+"\nisDir: "+classFolder.isDirectory()+"\nPath: "+classFolder.getAbsolutePath());
+
+        String folderPath = classFolder.getParent();
+        File folder = new File(folderPath);
+
+        System.out.println("exists: "+folder.exists()+"\nisFile: "+folder.isFile()+"\nisDir: "+folder.isDirectory()+"\nPath: :"+folder.getAbsolutePath());
+
+        if(folder.isDirectory()) return folder;
+
+        //
+        return null;
+
+        //
+    }
+
 
     /**
      * Makes a new file named "storage.txt" in the same folder as the jar
@@ -178,8 +201,10 @@ public class Manager {
 
 
 
-        System.out.println(Manager.getJarFolder());
-        System.out.println(newStorageFile());
+        //System.out.println(Manager.getJarFolder());
+        //System.out.println(newStorageFile());
+
+        System.out.println(Manager.getJarFolderTEST());
 
         //Manager.newStorageFile();
 
