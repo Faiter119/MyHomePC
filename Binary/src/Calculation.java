@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Calculation {
 
     // There was a better way! :D no more switch-crap :p
