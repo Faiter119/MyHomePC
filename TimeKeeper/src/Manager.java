@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Properties;
 
 public class Manager {
@@ -32,29 +33,31 @@ public class Manager {
         return events;
     }
     @SuppressWarnings("unchecked")
-    public static <T extends Serializable> T read(){
+    public static <T extends Serializable> Optional<T> read(){
 
         /*try {
             prop.load(Manager.class.getResourceAsStream("config.properties"));
         }catch (IOException ex){return null;}*/
 
-        File jarFolder = getJarFolder();
+        Optional<File> jarFolder = getJarFolder();
 
-        File storage = new File(jarFolder,"storage.txt");
+        if(!jarFolder.isPresent()) return Optional.empty();
+
+        File storage = new File(jarFolder.get(),"storage.txt");
 
         System.out.println("reading? "+storage.exists()+" "+storage.isFile());
 
         return readFile(storage);
     }
     @SuppressWarnings("unchecked")
-    public static <T extends Serializable> T readFile(File file){
+    public static <T extends Serializable> Optional<T> readFile(File file){
 
         try(FileInputStream fis = new FileInputStream(file);
             ObjectInputStream ois = new ObjectInputStream(fis)){
 
-            return (T) ois.readObject();
+            return Optional.of((T) ois.readObject());
         }
-        catch (IOException | ClassNotFoundException e){return null;}
+        catch (IOException | ClassNotFoundException e){return Optional.empty();}
 
     }
 
@@ -106,7 +109,7 @@ public class Manager {
     /**
      * Gets folder from where Jar / class files are ran.
      */
-    public static File getJarFolder() {
+    public static Optional<File> getJarFolder() {
 
         /*String jarFilePath = Manager.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         File jarFile = new File(jarFilePath);
@@ -120,9 +123,9 @@ public class Manager {
 
         File jarFolder = new File("."); // u make yoke, 2ez4rtz
 
-        if(jarFolder.isDirectory()) return jarFolder;
+        if(jarFolder.isDirectory()) return Optional.of(jarFolder);
 
-        return null;
+        return Optional.empty();
 
         //
     }
@@ -153,22 +156,22 @@ public class Manager {
     /**
      * Makes a new file named "storage.txt" in the same folder as the jar
      */
-    public static File newStorageFile(){
+    public static Optional<File> newStorageFile(){
 
-        File jarFolder = getJarFolder();
-        if(jarFolder == null) return null;
+        Optional<File> jarFolder = getJarFolder();
+        if(!jarFolder.isPresent()) return Optional.empty();
 
-        File storageFile = new File(jarFolder, "storage.txt");
+        File storageFile = new File(jarFolder.get(), "storage.txt");
         System.out.println(storageFile.getAbsolutePath());
 
         try {
-            if(!storageFile.createNewFile()) return null;
+            if(!storageFile.createNewFile()) return Optional.empty();
 
             write(storageFile, getDefaultEvents());
 
         }catch (IOException e){e.printStackTrace();}
 
-        return storageFile;
+        return Optional.of(storageFile);
     }
 
     public static void main(String[] args) {

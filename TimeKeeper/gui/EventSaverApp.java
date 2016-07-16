@@ -47,11 +47,9 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
     public void start(Stage theStage) {
 
         stage = theStage;
-        events = Manager.read();
+        events = (ArrayList<Event>) Manager.read().get();
         System.out.println(Manager.getJarFolder());
-
         if(events == null){
-            //String path = JOptionPane.showInputDialog("Input path to storage-file:");
             events = External.noStorageFileFoundAlert(stage);
 
             //events = External.loadNewEvents(stage);
@@ -62,9 +60,7 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
             }
         }
         
-        if(events.size() == 0){
-            events = Manager.getDefaultEvents();
-        }
+        if(events.size() == 0) events = Manager.getDefaultEvents();
 
         border = new BorderPane();
         border.setPadding(new Insets(20));
@@ -73,7 +69,7 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         //border.setRight(newEventPane());
         //border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
 
-        table.getSelectionModel().selectedIndexProperty().addListener((event)->{
+        table.getSelectionModel().selectedIndexProperty().addListener( (event) -> {
 
             List<Event> selectedEvents = table.getSelectionModel().getSelectedItems();
             int countOfRowsSelected = selectedEvents.size(); //table.getSelectionModel().getSelectedIndices().size();
@@ -102,11 +98,8 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
             stage.sizeToScene(); // FIXME: 07.07.2016 Jittering
 
         });
-        //table.setPrefSize(250,400);
         stage.setScene(new Scene(border));
-        stage.setOnCloseRequest((event)->
-            Manager.write(new File(Manager.getJarFolder(),"storage.txt"), events)
-        );
+        stage.setOnCloseRequest( (event) -> Manager.getJarFolder().ifPresent((consumer) -> Manager.write(new File(consumer, "storage.txt"), events)) );
         stage.show();
     }
     private static TableView<Event> table;
@@ -183,7 +176,6 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         endTextField.setOnKeyPressed((event -> {
             if(event.getCode() == KeyCode.ENTER) descriptionTextField.requestFocus();
         }));
-
 
         // Button
         Button addNewEventButton = new Button("Add");
@@ -303,9 +295,6 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         vBox.setAlignment(Pos.CENTER); //vBox.setPadding(new Insets(20));
         vBox.setPrefWidth(500);
 
-
-
-
         // Buttons
         HBox hBox = new HBox();
         hBox.setAlignment(Pos.CENTER); hBox.setSpacing(20); hBox.setPadding(new Insets(20));
@@ -377,7 +366,9 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
 
                 ArrayList<Event> newEvents = External.loadNewEvents(stage);
                 if(newEvents != null) {
-                    Manager.write(new File(Manager.getJarFolder(),"storage.txt"), events);
+
+                    Manager.getJarFolder().ifPresent( (consumer) -> Manager.write(new File(consumer, "storage.txt"),events)); // dam son where'd you find this
+
                     table.getItems().removeAll(events);
                     table.getItems().addAll(newEvents);
 
@@ -511,9 +502,15 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
             item.clear();
         }
     }
-    // Takes badly formated time and makes it into localtime by magic
+
+    /**
+     * Takes badly formated time and makes it into localtime by magic
+     */
     private static LocalTime parse(String time){
         time = time.trim();
+        if(time.length() == 4) time = time.substring(0,2)+":"+time.substring(2); // changes 1430 -> 14:30
+        else if(time.length() == 3) time = time.substring(0,1)+":"+time.substring(1); // changes 630 -> 6:30
+
         time = time.replaceAll("[ .]",":");
         time = time.replaceAll("-",":");
         time = time.replaceAll(" ",":");

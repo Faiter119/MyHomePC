@@ -31,8 +31,13 @@ public class External {
 
             System.out.println("New file..");
 
-            File newFile = Manager.newStorageFile();
-            return Manager.readFile(newFile);
+
+            File newFile = Manager.newStorageFile().get();
+
+
+            Manager.newStorageFile().ifPresent( (file) -> Manager.readFile(file));
+
+            return (T) Manager.readFile(newFile).get();
 
         } else if (result.get() == loadButton) {
 
@@ -48,12 +53,12 @@ public class External {
     public static void makeBackup(Stage stage, ArrayList<Event> events){
 
         DirectoryChooser chooser = new DirectoryChooser();
-        chooser.setInitialDirectory(Manager.getJarFolder());
+        Manager.getJarFolder().ifPresent((file)-> chooser.setInitialDirectory(file));
 
         File selectedDir = chooser.showDialog(stage);
 
         if(selectedDir == null){
-            Manager.writeBackup(Manager.getJarFolder(), events);
+            Manager.getJarFolder().ifPresent((file) -> Manager.writeBackup(file, events));
         }
         else {
             Manager.writeBackup(selectedDir, events);
@@ -62,12 +67,13 @@ public class External {
     public static ArrayList<Event> loadNewEvents(Stage stage){
 
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(Manager.getJarFolder());
+
+        Manager.getJarFolder().ifPresent((file)-> chooser.setInitialDirectory(file));
 
         File loadedFile = chooser.showOpenDialog(stage);
 
         if(loadedFile == null) return null;
 
-        return Manager.readFile(loadedFile);
+        return (ArrayList<Event>) Manager.readFile(loadedFile).get();
     }
 }
