@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Binary/Binary.iml" filepath="$PROJECT_DIR$/Binary/Binary.iml" group="Random" />
+      <module fileurl="file://$PROJECT_DIR$/Browser/Browser.iml" filepath="$PROJECT_DIR$/Browser/Browser.iml" />
       <module fileurl="file://$PROJECT_DIR$/Builder/Builder.iml" filepath="$PROJECT_DIR$/Builder/Builder.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Cardgames/Cardgames.iml" filepath="$PROJECT_DIR$/Cardgames/Cardgames.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/CounterApp/CounterApp.iml" filepath="$PROJECT_DIR$/CounterApp/CounterApp.iml" group="Apps" />

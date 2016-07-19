@@ -1,5 +1,8 @@
 import javafx.application.Application;
+import javafx.application.Preloader;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -27,7 +30,7 @@ public class FX extends Application{
         GridPane gridPane = new GridPane(); // HBox(horizontal), VBox(vertical), StackPane(on top of eachother?), GridPane, FlowPane, Tabpane( and Tab)
         gridPane.setPadding(new Insets(50));
         gridPane.setVgap(50); gridPane.setHgap(50);
-       // gridPane.setGridLinesVisible(true);
+       // gridPane.setGri   dLinesVisible(true);
 
         // Text
         Text text = new Text();
@@ -66,6 +69,28 @@ public class FX extends Application{
 
         Text mouse = new Text("X: Y:");
 
+        //
+
+        final Slider slider = new Slider();
+        slider.setMin(0);
+        slider.setMax(50);
+
+        final ProgressBar pb = new ProgressBar(0);
+        final ProgressIndicator pi = new ProgressIndicator(0);
+
+        slider.valueProperty().addListener(
+                (ObservableValue<? extends Number> ov, Number old_val,
+                        Number new_val) -> {
+                    pb.setProgress(new_val.doubleValue()/50);
+                    pi.setProgress(new_val.doubleValue()/50);
+                });
+
+        final HBox hb = new HBox();
+        hb.setSpacing(5);
+        hb.setAlignment(Pos.CENTER);
+        hb.getChildren().addAll(slider, pb, pi);
+        //bar.setProgress(0.5);
+        //
 
 
         gridPane.add(markTimeButton(text, start),0,0,2,1); gridPane.add(new Label("Marked Time ->"),1,0);gridPane.add(text,2,0);
@@ -74,11 +99,15 @@ public class FX extends Application{
         System.out.println(MouseInfo.getPointerInfo().getDevice().toString());
         gridPane.add(link,0,4);
         gridPane.add(mouse,4,4,4,4);
+        gridPane.addRow(4,hb);
+
         Scene scene = new Scene(gridPane);
         scene.setOnMouseClicked(event -> mouse.setText("X: "+Double.toString(scene.getX())+" - Y: "+Double.toString(scene.getY())));
         stage.setScene(scene);
         stage.setMinHeight(java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2); stage.setMinWidth(java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2);
         stage.show();
+
+
     }
 
     public Button markTimeButton(Text text, LocalTime startTime){
