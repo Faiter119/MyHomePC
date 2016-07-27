@@ -75,7 +75,10 @@ public class BrowserApp extends Application {
         });
         //Button forwardButton = new Button("Forward");
         Button refreshButton = new Button("Refresh");
-        refreshButton.setOnAction(event -> webEngine.load(webEngine.getLocation()));
+        refreshButton.setOnAction(event -> {
+            webEngine.load(webEngine.getLocation());
+            //System.out.println("Hello!");
+        });
 
 
         topBar.getChildren().addAll(backButton,/* forwardButton,*/ refreshButton, adressBar);
