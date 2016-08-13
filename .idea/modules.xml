@@ -6,7 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/Browser/Browser.iml" filepath="$PROJECT_DIR$/Browser/Browser.iml" />
       <module fileurl="file://$PROJECT_DIR$/Builder/Builder.iml" filepath="$PROJECT_DIR$/Builder/Builder.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Cardgames/Cardgames.iml" filepath="$PROJECT_DIR$/Cardgames/Cardgames.iml" group="Apps" />
+      <module fileurl="file://$PROJECT_DIR$/CoinFlipApp/CoinFlipApp.iml" filepath="$PROJECT_DIR$/CoinFlipApp/CoinFlipApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/CounterApp/CounterApp.iml" filepath="$PROJECT_DIR$/CounterApp/CounterApp.iml" group="Apps" />
+      <module fileurl="file://$PROJECT_DIR$/Dictionary/Dictionary.iml" filepath="$PROJECT_DIR$/Dictionary/Dictionary.iml" />
       <module fileurl="file://$PROJECT_DIR$/DistributionCalculator/DistributionCalculator.iml" filepath="$PROJECT_DIR$/DistributionCalculator/DistributionCalculator.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Eksamen/Eksamen.iml" filepath="$PROJECT_DIR$/Eksamen/Eksamen.iml" group="Random" />
       <module fileurl="file://$PROJECT_DIR$/Eksamen/Eksamen 2015.iml" filepath="$PROJECT_DIR$/Eksamen/Eksamen 2015.iml" />
@@ -20,6 +22,7 @@
       <module fileurl="file://$PROJECT_DIR$/Prime_Numbers/Prime_Numbers.iml" filepath="$PROJECT_DIR$/Prime_Numbers/Prime_Numbers.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/RandomStuff/RandomStuff.iml" filepath="$PROJECT_DIR$/RandomStuff/RandomStuff.iml" group="Random" />
       <module fileurl="file://$PROJECT_DIR$/RedditHelp/RedditHelp.iml" filepath="$PROJECT_DIR$/RedditHelp/RedditHelp.iml" group="Random" />
+      <module fileurl="file://$PROJECT_DIR$/Regex/Regex.iml" filepath="$PROJECT_DIR$/Regex/Regex.iml" />
       <module fileurl="file://$PROJECT_DIR$/Stream/Stream.iml" filepath="$PROJECT_DIR$/Stream/Stream.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Threads/Threads.iml" filepath="$PROJECT_DIR$/Threads/Threads.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/TimeAndAlarms/TimeAndAlarms.iml" filepath="$PROJECT_DIR$/TimeAndAlarms/TimeAndAlarms.iml" group="Apps" />

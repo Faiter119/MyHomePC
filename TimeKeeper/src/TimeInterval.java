@@ -1,10 +1,16 @@
+import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.Optional;
 
-public class TimeInterval {
+public class TimeInterval implements Serializable{
 
     private LocalTime start;
     private LocalTime end;
+    private DayOfWeek[] days = new DayOfWeek[0];
 
     public TimeInterval(LocalTime start, LocalTime end){
 
@@ -14,6 +20,18 @@ public class TimeInterval {
 
     public LocalTime getStart() { return start; }
     public LocalTime getEnd() { return end; }
+    public void setDays(DayOfWeek ... days){ this.days = days; }
+    public long getMinutes(){ return ChronoUnit.MINUTES.between(start,end); }
+    public Optional<DayOfWeek[]> getDays(){
+
+        if(days.length == 0) return Optional.empty();
+        else return Optional.of(days);
+    }
+    public void addDay(DayOfWeek day){
+        DayOfWeek[] newDays = Arrays.copyOf(days, days.length+1);
+        newDays[newDays.length-1] = day;
+        days = newDays;
+    }
 
     public boolean overlaps(TimeInterval interval){
 
@@ -27,6 +45,17 @@ public class TimeInterval {
         if( (start.isBefore(iStart)) && (end.isAfter(iEnd)) ) return true;
         if( (start.isBefore(iStart) && (end.isBefore(iEnd))) ) return true;
         return false;*/
+    }
+    public boolean daysMatch(TimeInterval interval){
+
+        if( !this.getDays().isPresent()  || !interval.getDays().isPresent() ) return false;
+
+        for(DayOfWeek day : days)
+            for(DayOfWeek iDay : interval.getDays().get()) // Checked above...
+                if (day.equals(iDay)) return true;
+
+        return false;
+
     }
     public Optional<TimeInterval> overlapWith(TimeInterval interval){
 
@@ -59,7 +88,7 @@ public class TimeInterval {
     public boolean hasDays(){
         return false;
     }
-    public TimeInterval of(Event event){
+    public static TimeInterval of(Event event){
         return new TimeInterval(event.getStart(), event.getEnd());
     }
 
@@ -75,6 +104,11 @@ public class TimeInterval {
         System.out.println(i0.overlaps(i1));
 
         i0.overlapWith(i1).ifPresent( (optional)-> {System.out.println(optional+"");});
+
+
+        i0.getDays().ifPresent(consumer->{System.out.println(consumer);});
+        i0.addDay(DayOfWeek.MONDAY);
+        i0.getDays().ifPresent(consumer->{System.out.println(Arrays.toString(consumer));});
 
     }
 }

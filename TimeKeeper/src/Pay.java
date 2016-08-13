@@ -1,8 +1,7 @@
 import java.math.BigDecimal;
+import java.sql.Time;
 import java.text.NumberFormat;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.Period;
+import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -12,7 +11,8 @@ public class Pay {
 
     private BigDecimal base;
     private Currency currency;
-    private List<Map<List<LocalTime>, BigDecimal>> periodPayList; // idk what to do
+
+    private Map<TimeInterval, BigDecimal> additionalPayMap;
 
     public Pay(BigDecimal base, Currency currency){
         this.base = base;
@@ -30,14 +30,37 @@ public class Pay {
         return base.divide(new BigDecimal(60), BigDecimal.ROUND_DOWN);
     }
 
-    public BigDecimal payFor(LocalTime start, LocalTime end){
+    public BigDecimal payFor(Event event){
 
-        long minutes = ChronoUnit.MINUTES.between(start, end);
+        TimeInterval[] intevals = additionalPayMap.keySet().toArray(new TimeInterval[0]);
 
-        return payPerMinute().multiply(new BigDecimal(minutes));
+        BigDecimal wage = new BigDecimal(0d);
+        TimeInterval eventInterval = TimeInterval.of(event);
+        long intervalMinutes = 0;
+
+        for (TimeInterval interval : intevals){
+
+            if (interval.overlaps(eventInterval)){
+
+                TimeInterval overlap = interval.overlapWith(eventInterval).get(); // Checked above
+
+                wage = wage.add(base.multiply(additionalPayMap.get(interval)));
+                intervalMinutes += overlap.getMinutes();
+            }
+
+        }
+        long remaining = eventInterval.getMinutes() - intervalMinutes;
+
+        wage = wage.add(base.multiply(new BigDecimal(remaining)));
+
+        return wage;
 
     }
-    public void addPeriodPay(LocalTime start, LocalTime end, BigDecimal percentagePlus){
+    public void addPeriodPay(LocalTime start, LocalTime end, BigDecimal percentagePlus, DayOfWeek ... days){
+
+        BigDecimal addition = base.add(base.multiply(percentagePlus));
+        TimeInterval interval = new TimeInterval(start, end);
+
         List<LocalTime> dates = Arrays.asList(start,end);
     }
 
@@ -47,14 +70,14 @@ public class Pay {
 
         Pay pay = new Pay(new BigDecimal(162.45));
 
-        System.out.println(pay.payFor(LocalTime.of(6,0), LocalTime.of(14,0)).doubleValue());
+        System.out.println(pay.payFor(new Event(LocalDate.now())).doubleValue());
 
         LocalTime start = LocalTime.of(6,0);
         LocalTime end = LocalTime.of(14,30);
 
         System.out.println(ChronoUnit.MINUTES.between(start, end));
 
-        pay.addPeriodPay(LocalTime.of(18,0), LocalTime.of(24,0),new BigDecimal(150));
+        pay.addPeriodPay(LocalTime.of(18,0), LocalTime.of(0,0), new BigDecimal(150));
 
 
     }

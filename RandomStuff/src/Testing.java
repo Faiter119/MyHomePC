@@ -66,5 +66,8 @@ public class Testing {
 
         Period period = Period.between(LocalDate.now(),LocalDate.parse("2016-01-01"));
         System.out.println(period);
+
+        System.out.println(Byte.MIN_VALUE);
+        System.out.println(Byte.MAX_VALUE);
     }
 }

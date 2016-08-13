@@ -1,8 +1,13 @@
 import com.sun.deploy.util.ArrayUtil;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class RandomArraysAndStorting {
 
@@ -65,7 +70,7 @@ public class RandomArraysAndStorting {
             array[opposite] = temp;
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         /*for (int i=0; i<10; i++) {
             System.out.println(getRandomInRange(0, 10));
@@ -73,16 +78,28 @@ public class RandomArraysAndStorting {
 
         //System.out.println(Arrays.toString(getRandomArray(10,-10,10)));
 
-        int[] array = getRandomArray(70,-9,9);
+        int[] array = getRandomArray(39, Integer.MIN_VALUE, Integer.MAX_VALUE-1);
         System.out.println(Arrays.toString(array));
 
-        Arrays.sort(array);
+    /*    Arrays.sort(array);
         System.out.println(Arrays.toString(array));
 
         reverse(array);
-        System.out.println(Arrays.toString(array));
+        System.out.println(Arrays.toString(array));*/
 
-        // System.out.println(Arrays.toString(getRandomArray())); // out of mem ':p
+        Path path = Paths.get("RandomStuff/numbers.txt");
 
+        if (!Files.exists(path)) Files.createFile(path);
+
+        else{
+            Files.delete(path);
+            Files.createFile(path);
+        }
+
+        List<Integer> list = IntStream.of(array).boxed().collect(Collectors.toList());
+
+        for (Integer integer : list){
+            Files.write(path, (integer.toString()+"\n").getBytes(), StandardOpenOption.APPEND);
+        }
     }
 }

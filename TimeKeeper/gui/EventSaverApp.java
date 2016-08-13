@@ -3,14 +3,17 @@
  */
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -25,10 +28,8 @@ import javafx.util.converter.LocalTimeStringConverter;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.time.DateTimeException;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.math.BigDecimal;
+import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,8 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
     }
 
     private static ArrayList<Event> events;
+    private static Pay pay;
+
     private static BorderPane border;
     private static Stage stage;
 
@@ -63,9 +66,10 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         if(events.size() == 0) events = Manager.getDefaultEvents();
 
         border = new BorderPane();
-        border.setPadding(new Insets(20));
+        //border.setPadding(new Insets(20));
 
         border.setCenter(tableOfEventsPane());
+        border.setTop(toolBar());
         //border.setRight(newEventPane());
         //border.setLeft(eventDetailsPane(table.getSelectionModel().getSelectedItem()));
 
@@ -102,6 +106,65 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         stage.setOnCloseRequest( (event) -> Manager.getJarFolder().ifPresent((consumer) -> Manager.write(new File(consumer, "storage.txt"), events)) );
         stage.show();
     }
+    public static ToolBar toolBar(){
+
+        ToolBar toolBar = new ToolBar();
+
+        toolBar.getItems().addAll(financeButton()/*, new Button("Events")*/);
+
+
+        return toolBar;
+
+    }
+    private static Button financeButton(){
+
+        Button button = new Button("Finance");
+        button.setOnAction(event -> {
+            stage.setScene(financeChangeScene());
+            stage.sizeToScene();
+            stage.show();
+        });
+
+        return button;
+    }
+    private static Scene financeChangeScene(){
+
+        BorderPane borderPane = new BorderPane();
+
+
+        borderPane.setRight(newTimeIntervalPane());
+
+        return new Scene(borderPane);
+    }
+    private static Node newTimeIntervalPane(){
+
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10); gridPane.setHgap(10); gridPane.setPadding(new Insets(10));
+        //
+        DayOfWeek[] days = DayOfWeek.values();
+        CheckBox[] weekDayCheckBoxes = new CheckBox[days.length];
+        for(int i=0; i<days.length; i++){
+            DayOfWeek day = days[i];
+            CheckBox checkBox = new CheckBox(day.toString().charAt(0)+day.toString().substring(1).toLowerCase()); // MONDAY -> Monday
+            checkBox.setOnAction(event -> {
+                DayOfWeek d = DayOfWeek.valueOf(checkBox.getText().toUpperCase());
+                if(checkBox.isSelected()) System.out.println(d);
+            });
+            weekDayCheckBoxes[i] = checkBox;
+
+        }
+       // Bindings.bindContent(map);
+        VBox dayCheckBoxHBox = new VBox(weekDayCheckBoxes);
+        dayCheckBoxHBox.setAlignment(Pos.CENTER_LEFT); dayCheckBoxHBox.setSpacing(10);
+        //
+
+        gridPane.add(dayCheckBoxHBox,4,2);
+        VBox rightVBox = new VBox(dayCheckBoxHBox);
+        rightVBox.setAlignment(Pos.CENTER); rightVBox.setSpacing(10); rightVBox.setPadding(new Insets(10));
+
+        return gridPane;
+    }
+
     private static TableView<Event> table;
     public static Pane tableOfEventsPane(){
 
@@ -466,6 +529,12 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         Label label = new Label("Several Events");
         label.setFont(new Font("Consolas",20));
 
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setMaxHeight(Screen.getPrimary().getBounds().getHeight()/2);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
         GridPane eventsGrid = new GridPane();
 
         for(int i=0; i<events.size(); i++){
@@ -487,14 +556,31 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
         for(Event e : events){
             d = d.plus(e.getDuration());
         }
+        scrollPane.setContent(eventsGrid);
 
         TextField duration = new TextField(d.toHours()+" hours and "+((d.toMinutes())-(60*d.toHours()))+" minutes.");
         duration.setEditable(false);
 
-        vBox.getChildren().addAll(label, eventsGrid, duration);
+
+        TextField wageTextField = new TextField();
+        wageTextField.setVisible(false); wageTextField.setEditable(false);
+
+        BigDecimal wage = new BigDecimal(162.45*d.toHours());
+        Button calculateWageButton = new Button("Calculate Wage");
+        calculateWageButton.setOnAction(event -> {
+
+            // TODO: 29.07.2016
+            wageTextField.setVisible(true);
+            wageTextField.setText(wage.doubleValue()+"// Todo fix");
+        });
+
+        HBox wageHBox = new HBox(calculateWageButton, wageTextField);
+        wageHBox.setAlignment(Pos.CENTER); wageHBox.setSpacing(10);
+        vBox.getChildren().addAll(label, scrollPane, duration, wageHBox);
 
         return vBox;
     }
+
 
     private static void clearAll(TextInputControl ... items){
 
