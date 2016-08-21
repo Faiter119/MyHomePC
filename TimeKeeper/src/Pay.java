@@ -18,7 +18,7 @@ public class Pay {
         this.base = base;
         this.currency = currency;
     }
-    public Pay(BigDecimal base){ this(base,Currency.getInstance("NOK")); }
+    public Pay(BigDecimal base){ this(base, Currency.getInstance("NOK")); }
     public Pay(){ this(new BigDecimal(111.9)); }
 
     public BigDecimal getBase(){ return base;}
@@ -32,13 +32,13 @@ public class Pay {
 
     public BigDecimal payFor(Event event){
 
-        TimeInterval[] intevals = additionalPayMap.keySet().toArray(new TimeInterval[0]);
+        TimeInterval[] intervals = additionalPayMap.keySet().toArray(new TimeInterval[0]);
 
         BigDecimal wage = new BigDecimal(0d);
         TimeInterval eventInterval = TimeInterval.of(event);
         long intervalMinutes = 0;
 
-        for (TimeInterval interval : intevals){
+        for (TimeInterval interval : intervals){
 
             if (interval.overlaps(eventInterval)){
 
@@ -55,6 +55,15 @@ public class Pay {
 
         return wage;
 
+    }
+    public BigDecimal payFor(Event[] events){
+
+        BigDecimal wage = new BigDecimal(0);
+
+        for (Event event : events){
+            wage = wage.add(payFor(event));
+        }
+        return wage;
     }
     public void addPeriodPay(LocalTime start, LocalTime end, BigDecimal percentagePlus, DayOfWeek ... days){
 

@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class TimeInterval implements Serializable{
 
@@ -21,7 +22,7 @@ public class TimeInterval implements Serializable{
     public LocalTime getStart() { return start; }
     public LocalTime getEnd() { return end; }
     public void setDays(DayOfWeek ... days){ this.days = days; }
-    public long getMinutes(){ return ChronoUnit.MINUTES.between(start,end); }
+    public long getMinutes(){ return ChronoUnit.MINUTES.between(start, end); }
     public Optional<DayOfWeek[]> getDays(){
 
         if(days.length == 0) return Optional.empty();
@@ -55,7 +56,6 @@ public class TimeInterval implements Serializable{
                 if (day.equals(iDay)) return true;
 
         return false;
-
     }
     public Optional<TimeInterval> overlapWith(TimeInterval interval){
 
@@ -103,10 +103,10 @@ public class TimeInterval implements Serializable{
 
         System.out.println(i0.overlaps(i1));
 
-        i0.overlapWith(i1).ifPresent( (optional)-> {System.out.println(optional+"");});
+        i0.overlapWith(i1).ifPresent( (timeInterval)-> {System.out.println(timeInterval+"");});
 
 
-        i0.getDays().ifPresent(consumer->{System.out.println(consumer);});
+        i0.getDays().ifPresent(dayOfWeeks->{System.out.println(dayOfWeeks);});
         i0.addDay(DayOfWeek.MONDAY);
         i0.getDays().ifPresent(consumer->{System.out.println(Arrays.toString(consumer));});
 
