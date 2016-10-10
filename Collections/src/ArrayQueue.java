@@ -129,12 +129,12 @@ public class ArrayQueue<T> implements Iterable<T>{
 
         /*int c = 0;
         while (stringArrayQueue.peek() != null) {
-            System.out.println(stringArrayQueue.poll());
+            System.out.println(stringArrayQueue.pop());
             System.out.println(Arrays.toString(stringArrayQueue.queueArray));
             System.out.println("Size: "+stringArrayQueue.size());
             System.out.println("Length: "+stringArrayQueue.length());
 
-            //if (Math.random() < 0.5) stringArrayQueue.offer("random: "+c++);
+            //if (Math.random() < 0.5) stringArrayQueue.push("random: "+c++);
         }
         System.out.println(Arrays.toString(stringArrayQueue.queueArray));*/
         // assert 1==0; // Må bruke -ea, samme som å kaste exception ish

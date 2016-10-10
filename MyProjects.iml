@@ -9,6 +9,9 @@
         <webroots>
           <root url="file://$MODULE_DIR$/Website/web" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/JSON/src" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
