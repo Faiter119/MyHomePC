@@ -5,12 +5,27 @@ import java.util.regex.Pattern;
  */
 public class Regex {
 
+
+    /**
+     *
+     */
+    public static boolean passwordCheck(String password){
+
+        System.out.println(password);
+
+        Pattern.compile("[A-Z]+\\d+");
+
+
+
+
+        return false;
+    }
+
     public static void main(String[] args) {
 
         // carplate: AA-00000,
 
         Pattern pattern = Pattern.compile("\\w{2}\\s\\d{5}"); // 2 word chars, 1 whitespace, then 5 digits
-
 
         String plate = "AB 82956";
         String notPlate = "ukdsa 1121";
@@ -18,6 +33,10 @@ public class Regex {
         System.out.println(pattern.toString());
         System.out.println(plate.matches(pattern.toString()));
         System.out.println(notPlate.matches(pattern.toString()));
+
+
+
+
 
     }
 
