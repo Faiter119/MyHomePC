@@ -1,0 +1,10 @@
+*{
+
+    -fx-font-family: Consolas;
+}
+
+.text-field{
+
+    -fx-background-color: aqua;
+
+}

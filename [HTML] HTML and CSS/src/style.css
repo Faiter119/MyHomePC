@@ -1,0 +1,22 @@
+*{
+    font-family: Consolas;
+}
+html{
+    background-color: #3F7FFF;
+
+}
+ul#colors{
+    display: table;
+}
+li#blue{
+    border: solid;
+    background-color: #3F7FFF;
+}
+li#turquoiseDark{
+     border: solid;
+     background-color: #3F9B9B;
+ }
+li#green{
+    border: solid;
+    background-color: #3F9B3F;
+}
