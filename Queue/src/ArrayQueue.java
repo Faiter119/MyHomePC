@@ -1,9 +1,11 @@
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
 /**
  * Created by OlavH on 10-Oct-16.
  */
-public class ArrayQueue<T> {
+public class ArrayQueue<T> implements Iterable<T>{
 
     private static final int INITIAL_SIZE = 127;
 
@@ -24,7 +26,7 @@ public class ArrayQueue<T> {
     public int size() {
         return size;
     }
-
+    protected int length(){return queueArray.length;}
     /**
      * Puts element at the back of the queue
      *
@@ -44,6 +46,7 @@ public class ArrayQueue<T> {
      * @return
      */
     public T poll() {
+        ensureSize();
         T thing = queueArray[0];
 
         System.arraycopy(queueArray, 1, queueArray, 0, queueArray.length-1); // Shifter arrayen 1 til venstre
@@ -73,7 +76,7 @@ public class ArrayQueue<T> {
             queueArray = Arrays.copyOf(queueArray, queueArray.length << 1);
 
         }
-        else if (size < queueArray.length-1 >> 1){
+        else if (size < queueArray.length >> 1){
             System.out.println("\tDecreasing size");
             queueArray = Arrays.copyOf(queueArray, queueArray.length >> 1);
 
@@ -81,6 +84,29 @@ public class ArrayQueue<T> {
         }
 
     }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            int i = 0;
+            int thisSize = size;
+            @Override
+            public boolean hasNext() {
+                return thisSize > 0;
+            }
+
+            @Override
+            public T next() {
+                thisSize--;
+                return queueArray[i++];
+            }
+        };
+    }
+    public Stream<T> stream(){
+
+        return Arrays.stream(queueArray,0, size);
+    }
+
 
     public static void main(String[] args) {
 
@@ -90,21 +116,30 @@ public class ArrayQueue<T> {
             stringArrayQueue.offer(String.valueOf(i));
         }
 
-        int c = 0;
+        /**
+         * Now you can use fore and streams with the queue because iterable
+         */
+        /*stringArrayQueue.forEach(System.out::println);
+
+        for (String str : stringArrayQueue) {
+            System.out.println(str);
+        }*/
+
+        stringArrayQueue.stream().forEach(System.out::println);
+
+        /*int c = 0;
         while (stringArrayQueue.peek() != null) {
             System.out.println(stringArrayQueue.poll());
             System.out.println(Arrays.toString(stringArrayQueue.queueArray));
+            System.out.println("Size: "+stringArrayQueue.size());
+            System.out.println("Length: "+stringArrayQueue.length());
 
             //if (Math.random() < 0.5) stringArrayQueue.offer("random: "+c++);
         }
-        System.out.println(Arrays.toString(stringArrayQueue.queueArray));
+        System.out.println(Arrays.toString(stringArrayQueue.queueArray));*/
         // assert 1==0; // Må bruke -ea, samme som å kaste exception ish
 
         // System.out.println(Arrays.toString(stringArrayQueue.queueArray));
 
-
-
     }
-
-
 }
