@@ -45,6 +45,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/DiceSpark/pom.xml" />
+        <option value="$PROJECT_DIR$/SpringBootTest/pom.xml" />
       </list>
     </option>
   </component>

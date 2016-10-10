@@ -29,6 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.time.*;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -102,7 +103,12 @@ public class EventSaverApp extends Application { // TODO: 07.07.2016 cleanup
             stage.sizeToScene(); // FIXME: 07.07.2016 Jittering
 
         });
-        stage.setScene(new Scene(border));
+        Scene scene = new Scene(border);
+
+        System.out.println(Paths.get(".").toAbsolutePath());
+
+        scene.getStylesheets().add("F:/Programming/HTMLCSS/Java/TimeKeeper/style.css");
+        stage.setScene(scene);
         stage.setOnCloseRequest( (event) -> Manager.getJarFolder().ifPresent((consumer) -> Manager.write(new File(consumer, "storage.txt"), events)) );
         stage.show();
     }
