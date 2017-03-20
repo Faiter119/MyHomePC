@@ -1,0 +1,31 @@
+*{
+    font-family: Consolas, serif;
+    background-color: #3f7f9b;
+}
+
+.node{
+    background-color: #489b34;
+    border-radius: 50%;
+    border: solid 2px black;
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    position: fixed;
+}
+
+.node:hover{
+
+    background-color: #3a9b6c;
+
+}
+.ui-widget-content{
+    background-color: #489b34;
+    border-radius: 50%;
+    border: solid 2px black;
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    position: relative;
+}

@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: EventSaverApp
+Main-Class: gui.EventSaverApp
 

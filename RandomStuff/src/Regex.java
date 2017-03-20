@@ -35,9 +35,6 @@ public class Regex {
         System.out.println(notPlate.matches(pattern.toString()));
 
 
-
-
-
     }
 
 }

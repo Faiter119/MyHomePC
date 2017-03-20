@@ -55,7 +55,7 @@ public class Primes {
 
 
         start = System.nanoTime();
-        int randomInt = generatePrime(0, Integer.MAX_VALUE);
+        int randomInt = generatePrime(1000,10000 );
         end = System.nanoTime();
         System.out.println(end-start);
         System.out.println(randomInt);

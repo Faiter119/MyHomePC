@@ -1,0 +1,371 @@
+s%% LyX 2.2.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know whatëa—Ke doing.
+\documentclass[norsk,headings=small]{scrbook}
+\usepackage{mathptmxê[scaled=0.92]{helvetÓ courier}
+\usepackage[T1]{fontencçlatin9]{inputencÔa4paper]{geometry}
+\õ{verbose²
+age{fancyhdr}
+\pagestylë}
+\setcounter{secnumdepth}{-2ã!length{\parskip}{\smallskipamount¿İindent¦{0pt}
+\usepackage{babelíurlç%[unicode=true,pdfusetitle,
+ bookmarksãõ	numbered=false,ã5okmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0}î
+style={},backrefÃcolorÉº]
+ {hyperref}
+
+\mak¡atletter
+
+%%%%%ûù÷õóQ LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewlin˜,
+\providecommand{\tabularnewline}{\\}
+
+%%%%%ûù÷õó Textclass specific LaTeX ¸s.
+\usepackage{type1	cm}%     û0   Fri skalering av fonter
+\usepackage{microtypeÆÆ Character protrusion &Ç
+ expansionÁ
+Mge[marginal,multiple]{footmisc}%  Penere fotnoter
+\usepackage{lastpage}%     û  Muliggjør "side n av N"Èf—ncyhdr}%     û  Head/foot
+\usepackage{upquote××:   Beskytter apostroffer i kildekode
+
+\renewcommand{\footn¾!layout}{\setlength\parindent{0em}çskip{\smallskipamount}}     û) % Forbedrer fotnoter som består av flereÏ avsnitt
+\newcommand{\forfatter}{õ
+4  %For å kunne kompilere tomme/testdokumenter.
+     ûù÷õóñp   %Bruk \renewcommand{\forfatter}{Navn} i preamble i leksjoner.
+
+%Ikke bruk protrusion på courier-fonten.
+\SetPŞ	[Yfactor=0]{encoding=T1,family=pcr}{}
+
+%Oppsett for floats
+\setcounter{totalnumber}{5}     û  %max #Í/sideÌnter{bottomnumber}{2}     ûE %max # floats på bunnen av en side
+\renewcommand{\textfraction}{0.13²%Andel som må væSre tekst på blandet side
+\renewcommand{\topfraction}{0.8}       %Max andel for floa´toppen av en±¨Pottomfraction}{0.8}    %Max andel for float på bunnen av en side
+\renewcommand{\Öpage®4} %Min. mengde¼Os på "page of floats"
+
+%Ny lengde på fotnotestrek - hele siden
+\renewcommand\fo×#rule{\kern -3\p@ \ifx \@textbottom ÊBelax \else \vskip \z@ \@plus .0005fil\fi \hrule \@width 1.0\columnğ1\kern 2.6\p@}%
+
+
+%tilpasning av kapittel
+\renewcoÊ1mand{\chapterheadstartvskip}{\vspace{2.3\baselineæ}
+\renewcomÁendÑ0pt}}
+%
+%Kapitler som <ikke starter ny side:
+\renewcommand{\chapter}{\thispagestyleç	õ	+}\global \@topnum \z@ \@afterindentfalse \s—cdef \@chapter \@sõ(}
+
+\addtokomafont{subsection}{\mdseries}Úérmfamily}
+
+%header m. teÄAst(leksjonsnavn) og side n av N
+%footer m. Opphavsrett: ForfatterÏ,tiftelsen TISIP
+
+\fancyhf{}%clear all fieldsäQead[RO]{\sffamily\footnotesize{}side~\thepage~av~\pageref{LastPage}}
+\fancyhead[L´
+\rightmarkå0cyhead[RE]{\sffamily\footnotesize\leftmark}
+\fanĞLÔ%{}side~\thepage~av~\pageref{LastPage}Îjancyfoot[RO]{\sffamily\scriptsize{}©~\forfatter~og stiftelsen TISIP}
+\renewcommand{\headrulewidth}{0pt}
+\f–	LEœzfamily\scriptsize{}©~\forfatter~og stiftelsen TISIP}
+
+%Nødv. for å ikke få store bokstaver
+\renewcommand{\chaptermark}[1]{0\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{ĞrightÑ
+%Kapittelsider u. kolumnelinje¶
+*{\chapterØzagestyle}{empty}
+
+%Eksperiment kansellert fordi:
+% * sviktet (latexfeil) i øving uten referanser (behov for /usepackage?)
+z% * pdf-lesere er ikke så veldig tosidige heller . . .
+%%"På motstående side" i stedet for "neste/forrige". Dette
+%%er en Otosidig layout for bøker.
+%\renewcommand{\reftextfaceafter}{på motstående side}Êbeforeâ	ztående side}
+
+\newcommand{\metainfo}[1]{\itshape
+{\hspace*{\fill}#1\bigskip\\{{\LARGE\textbf{\lektittel}}\begin{footnotesicze}\smallskip\\
+\forfatter, Institutt for informatikk og e-læring ved NTNU\\
+Lærestoffet er utvikleÁfaget <<\fagkode{g} \fagnavn>>\end{footnotesize}\medskip\\}}\normalfont}
+
+ \newenvironment{kodeliten}
+     {\begin{script²paríli§+t}{}{
+         \setlength{\leftmargin}{0pt}ÚrighìÑistparindentâ/}% needed for AMS classes
+         \raggedrightêsetlength{\itemsep}{0pt}Ïæparï	Å     \normalfont\ttfamily}%
+     àitem[]}ğ{\end{list}öscriptsize}}
+
+%%%%%ûù÷õó User speci§1ied LaTeX commands.
+
+\usepackage{multicol}
+\renewÙA{\forfatter}{Helge Hafting}
+
+\makeatother
+
+\begin{document}
+
+\cha¤zter{Øving 12 algoritmer og datastrukturer}
+
+\tableofcontents{}
+
+\section{Innledning}
+
+Lag et program som kan lese en fil ozg lage en komprimert utgave. Lag
+et annet program som pakker ut igjen og gjenskaper originalen. 
+
+Bruk enten Huffmankodingz eller Lempel-Ziv for å komprimere. Ressurssterke
+grupper med mange gode programmerere må gjerne lage begge deler for
+å opWpnå best mulig kompresjon. I så fall anbefaler jeg å lage separate
+programmer, det gjør÷enklere å teste og dele på arZeidet. Da går
+an å sjekke hvilken algoritme som komprimerer best, og om det er en
+fordel åÕ output fra Lempel-ZXv med Huffmann.
+
+Programmer som <<zip>> bruker Lempel-Ziv for å komprimere, og deretter
+®koding på output fra¿zl-Ziv.
+
+Det kan bli en del arbeid, da håndtering av bits \& bytes er nytt
+for mange. Det er derfor denne øvingen teller liztt mer.
+
+\subsection{Testfiler for komprimering}
+\begin{labeling}{Forelesningen~(PDF)}
+\item [{Oppgavetekst~(pdf)}] \url{hSttp://www.iie.ntnu.no/fag/_alg/kompr/opg12.pdf}
+\item [{Oppgavetekst~(txt)}] \url{h­'Sg12.txt}
+\item [{Oppgavetekst~(tex)}] \url{http://www.iie.ntnu.no/fag/_alg/kompr/op­ex¯
+Forelesningen~(pdfµV\url{http://www.iie.ntnu.no/fag/_alg/kompr/diverse.pdf}
+\item [{Forelesningen~(txt)}] ª$V/kompr/diverse.txt}
+\item [{Forelesningen~(lyx)}] \url{http://www.iie.ntnu.no/fag/_algªlyx¶	
+\end{lab¢qling}
+
+\section{Krav til løsningen}
+\begin{enumerate}
+\item Implementer enten Lempel-Ziv eller Huffmannkoding. (EébegŒDe deler,
+om dere har tid!) Andre algoritmer blir ikke godkjent medmiØ/det
+er avtalt på forhånd. Lempel-Ziv-Welsh (LZW£mer en annen algoritme.
+\item Dere må lage programmene selv, ikke noe <<cut \& paste>> fra nettet.
+Grupper somÎkan fšhklare detaljer i programmet sitt, får ikke
+godkjent denne oppgaven. Det er mye å lære av å gjøre en slikÑ,
+som en›kke får med segøf<<cut \& paste>>. Både når det gjelder
+algoritmene, og generell programmering. 
+\item Innpakking og utApakking \emph{skal }være separate frittstående programmer.
+Det erÇ ikke }greit å ha ett samleĞ som både gjør “npakking
+og utóJ. De to programmene kan imidlertid benytte seg av felles
+klasser, om det pñ	.
+\item P³måz lese og skrive filer. Altså ikke bare testdata i en
+tabell.
+\item Utpakkingsprogrammet må produsere en fil som er identis5k med originalen.
+Men det skal ikke trenge tilgang påĞ	filen, bare den komprimerte
+ä	.
+\item Ké	ing må kuŸzne lage en komprimert fil som er mindre enn originalen,
+målt i antall bytes. Operativsystemet kan fortelle hvor store fileRne
+er.
+\end{enumerate}
+
+\section{Deloppgave Lempel-Ziv}
+
+Implementer en variant avÙ datakompresjon. 
+
+Finn ut h¸Vor mye programmet deres komprimerer forskjellige typer store
+filer. (f.eks. ren tekst,àtõbehandlingsdokument, pd°t-fil
+e.l.) Det er ikke sikkert alle filtyper lar seg komprimere. Men for
+å få godkjent, må gruppa i det minste kunneÀEimere en stor tekstfil
+så den tar mindre plass \textendash{} og pakkeÔ.ut igjen også. 
+
+Gruppa må dessuten kunne fork´zre detaljene i programmene sine.
+
+\subsection{Tips om Lempel-ziv}
+
+Normalt blir det veldig lite kompresjon på små filer. B;ittesmå filer
+kan brukes for å finne feil i programmet, menİteste kompresjon
+børµne minst være på noen kilobyte.z
+
+Det blir noen avgjørelser å ta, som f.eks. hvor langt bakover programmet
+deres skal lete etter repeterte sekvenser. Zip dleter 32kB bakover,
+det fins også versjoner som går 64kB tilbake. Hvis dere lar programmet
+gå lengerÔ, vil det bli‘ntregere men sannsynligvis komprimere
+bedre også.
+
+Om en vil ha et veldig kjapt program, kan det lønne seg å la÷inspi‹Are
+av avanserte tekstsøkalgoritmer. 
+
+\subsubsection{Filformat}
+
+ô	/ bestemmer dere selv. Det kan fort bli en avveiª3ng mellom
+hvor komplisert programmet skal være, og ×godt dækomprimere.
+
+Den¿òte fila kan bestå av blok¢Rer. Hver blokk starter med
+en byte-verdi, som er et tall mellom -128 og +127. Hvisá"et er
+negativt, f.eks. -57, betyr ¢Set at det er en serie med tegn som ikke
+lot seg komprimere. (I dette eksempelet, 57Æ). 
+
+Hvis tall£positivt, angŸWr det lengden på en repetert sekvens.
+De neste 1, 2 eller 4 byte er et heltall som fortİhvor langt
+bakover i fila –zne sekvensen er å finne. Med 1\,byte (byte) er
+det bare mulig å gå 127 tegn bakover. Programmet blir raskt, men komprimerekr
+antagelig ikke så kraftig. Med 2\,byte (short) går det an å gå opp
+til 32\,kB bakover, men vi bruker altsÔ en ekstŸz byte. Med 4\,byte
+(int) kan vi gå opp til 2\,GB bakover. Det gir mange flere muligheter
+for å finne repeterte strenger, mzen bruker også mer plass. Et program
+som leter opptil 2\,GB bakover, blir sannsynligvis temmelig tregt
+også. Det kan lønnez seg å begrense litt\ldots{}
+
+\section{Deloppgave Huffmankoding}
+
+Lag et program som leser inn en fil og genererer en huffEmanntre ut
+fra byte-verdiene i filen. Deretter bruker programmet huff»et
+til å skrive en komprimerÛ	mannkodet®`l. Prøv f.eks. å komprimere
+et forelesningsnotat, eller kildekoden til programmet deres.
+
+Klarteñ å spare plass? For˜T pakke ut en slik komprimert fil må
+man ha huffmanntreet tilgjengelig. I tillegg til½e data,
+må fila ha nok inf¢zrmasjon til å kunne gjenskape Huffmantreet. F.eks.
+frekvenstabellen. Sparer dere fortsatt plass, når vi tar størrelsen
+på fslik ekstrainformasjon med i beregningen?
+
+Lag også et program som leser den komprimerte filen og pakkà
+ut.
+
+\subsec’+ion{Tips om Huffmankoding}
+
+\subsubsection{áGndata som trengs for å pakke ut igjen}
+
+Det er ikke nødvendig å lagre h˜lffmanntreet, det holder å lagre frekvenstabellen.
+Utpakkingsprogrammet kan dermed bygge opp samme tre ut fra³	ene.™0
+\begin{kodeliten}
+int~frekvenser{[}256{]};
+\end×En slik Ü-tabell blir alltid 1\,kB, filen som skal komp­zimeres
+må dermed være stor nok til at komprimeringen sparer mer enn 1\,kB.
+
+\subsubsection{Adaptiv Huffmannkoding}
+
+Med adraptiv huffmannkoding slipper man å lagre frekvensene også. Man
+deler fila opp i blokker med fast størrelse. Førsteİ ˜comprimerer
+man ikke, den bare kopieres til output. Samtidig lager man et huffmanntre.
+Neste blokk k	s medİ	atreet fra forrige blokk, og slik
+fortsetter det gjennom fila.
+
+\subsubsection{Om bitstrenger}
+
+Enï
+ er \emph{ikkŸ-}en streng som dette: \textquotedbl{}00001101é.
+Dette er en \emph{tekst»}med 8\,tegn. Skriver viªe til
+en fil, går det med 8\,byte, og vi oppnår ikke noe datakompresjon.
+
+Men bitstrengen 0b00001101 eªsamme som tall‰zt 13, og kan lagres
+som én byte.
+
+Datatypen <<long>> er på 64 bit. Ingen tegn vil trenge lenger Huffmankode
+enn det. (Det Okan vises at nå man komprimerer en fil på 2.7GB, trenger
+ingen tegn kodes med mÎ%n 44 bit.) <<long>> er dermed egnet tl
+å lagre bitstrenger.
+
+Å skrivé6 til fil, blir en del ekstra arbeid. Java lar
+oss bareÁe hele byte, og fäzr å være effektive bør vi bare skrive
+byte-array av en viss størrelse. Men, med høyre/venstreskift samt
+binære \& og | -op@erasjoner, kan vi få våre bitstrenger inn i et byte-array
+som såÊ2skrives til disk. 
+
+Tilsvarende for lesing: Vi les®oinn et byte-array, og plukker deretter
+ut én og én bit for å navigere gjennom huffmanntreet.
+
+\section{JavatipsÇbeggÎAdeloppgaver}
+
+\begin{tabular}{cccrr}
+\hline 
+\textbf{Datatype} & ìbits} & ábytêÙmin} & Ïm¥,x}\tabularnewline
+\hline 
+byte & 8 & 1 & -12õ27Ñshort & 16 & 2 & -32\,768 & ö7®ch¯D & 16 & 2 & 0 & 65\,535\tabularnewline
+int & 32 & 4 & -2147483648 & ó	7Ïlong & 64 & 8 & -9223372036Ö54775808 & 92233720368ê7\tabularnewline
+\hline 
+\end{ä7}
+
+Programmer som leser én og én byte fra fil, blir allªzid trege i Java.
+For å få noe fart i sakene, lønner det seg å lese/skrive større blokker,
+f.eks. et array med bytes.
+
+Jeg zgodkjenner imidlertid løsninger som leser/skriver én og én byte
+også \textendash{} så lenge de ikke er for trege til å demzonstreres.
+Noe bitfikling blir det uansett med Huffmannoppgaven. Det går ikke
+an å skrive <<en halv byte>> til fil, man måi i det minste samle
+opp bits til man har en hel byte. Det kan være lurt å lage en egen
+klasse for å sende®trenger©pfil.
+
+\subsection{Noen kodeeksempler}
+\begin{kodeliten}
+//Åpne~filer:
+
+innfil~=~new~DataInputStream(new~Bufferedè
+9m(new~FileInputStream(inn~\_navn)));
+
+utfil~=~new~DataOutÓ
+new~BufferedOutÁ
+µOut¹
+u~tÁ7)));~\\
+~\\
+//Lese~data~fra~fil~inn~i~byte-array:
+
+//~~î~{[}{]}Ò~:~äet~vi~leserÊÚ~int~posisjon~:~in§@ex~i~byte-array~for~det~vi~leser~inn
+
+//~~~int~mengde~~~:~antallÄ~vi~vilĞÔ innfil.readFully(data,~posisjon,¿Wngde);~\\
+~\\
+//Lese~inn~én~byte
+
+byte~x;
+
+x~=~innfil.readByte();
+
+//Har~også:
+
+short~sÕShortßchar~cÄnfil.readChar();
+
+int~i~=~inä	Intëlong~lìÓ	8Long();~\\
+~\\
+//Skrive~data~fra~byte-array~til~fil:
+
+ut™Dil.write(data,~posisjon,~mengde);~\\
+~\\
+//Skrive~én~byte~til~fil:
+
+ñsingleè
+=~17;
+
+utf¦Byte(åbyte);
+¼'/Har~også:~
+
+//utfil.writeChar(char~c);ãShort(short~s);ÒInt(int~i);~~ÁLong(loê(g~l);~\\
+~\\
+//Hente~13~bit~fra~long1,~8ï2~og~4æ%3,~
+
+//og~få~det~inn~i~et~byte-array:¬byte{E[}{]}~data~=~new~byte{[}3{]};
+
+long~long1~=~0b1101000010011;~//13~bitØ2àë1;~~~~~~//8~bitÀ3©~0b010;~~~~~û~//3~bit~\\
+~\\
+//8~førsteê?fra~long1~til~data{[}0{]}
+
+//øvrige~bits~maskeres~bort~med~\&
+
+Ï?~=~(byte)(long1~\&~0b11111111);~\\
+~\\
+//5~gjenværende~bit~fra~Ë4til~data{[}1{]}
+
+//høyreskiftet~fjerner~bits~vi~alle»Xede~har~lagt~i~data{[}0{]}
+
+//trenger~ikke~maskere~fordi~resterende~bits~i~long1~er~0.
+
+·1{]}~=~(byte)(â>\textcaompwordmark{}>~8);~\\
+~\\
+//data{[}1{]}~har~plass~til~3~av~de~8~bit~fra~long2
+
+//venstreskifter~5Êer~fordi~de~5~førßCe~bits~i~data{[}1{]}~er~i~bruk~fra~før
+
+//trenger~ikke~maskere~vekk¾fordi¶over~256Ûgår~inn~i~en~byte~uanse”Xt
+
+data{[}1{]}~|=~(byte)(long2~<\textcompwordmark{}<~5);~\\
+~\\
+//5~gjenværende~bit~fra~Átil~¤2{]}
+
+//høyreskiâ0t~fjerner~de~bits~vi~allerede~la~i~data{[}1{]}
+
+ó82{]}~=~(byte)(long2~>\textcompwordmark{}>~3);~~\\
+~\\
+//¸Æ9~har~plass~til~de~3~bit~fra~long3
+
+data{[}2{]}~|=~(byte)(ã.~<\textcompwordmark{}<~5);
+
+System.out.printf(Ôquotedbl²}\%x~\%x~\%x\textbackslash{}nïquotedbl{},~data{[}0{]ó
+1{]í
+2{]});
+\end{kodeliten}
+ïdocumentó

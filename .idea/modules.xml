@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1.iml" filepath="$PROJECT_DIR$/.idea/modules/1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1_main.iml" filepath="$PROJECT_DIR$/.idea/modules/1_main.iml" group="1" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1_test.iml" filepath="$PROJECT_DIR$/.idea/modules/1_test.iml" group="1" />
       <module fileurl="file://$PROJECT_DIR$/Array/Array.iml" filepath="$PROJECT_DIR$/Array/Array.iml" />
       <module fileurl="file://$PROJECT_DIR$/Binary/Binary.iml" filepath="$PROJECT_DIR$/Binary/Binary.iml" group="Random" />
-      <module fileurl="file://$PROJECT_DIR$/Browser/Browser.iml" filepath="$PROJECT_DIR$/Browser/Browser.iml" />
       <module fileurl="file://$PROJECT_DIR$/Builder/Builder.iml" filepath="$PROJECT_DIR$/Builder/Builder.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Cardgames/Cardgames.iml" filepath="$PROJECT_DIR$/Cardgames/Cardgames.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/CoinFlipApp/CoinFlipApp.iml" filepath="$PROJECT_DIR$/CoinFlipApp/CoinFlipApp.iml" />
@@ -24,8 +20,12 @@
       <module fileurl="file://$PROJECT_DIR$/Game/Game.iml" filepath="$PROJECT_DIR$/Game/Game.iml" group="Random" />
       <module fileurl="file://$PROJECT_DIR$/HTML/HTML.iml" filepath="$PROJECT_DIR$/HTML/HTML.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Hotelmanager/Hotelmanager.iml" filepath="$PROJECT_DIR$/Hotelmanager/Hotelmanager.iml" group="Apps" />
+      <module fileurl="file://$PROJECT_DIR$/JavaFX_Charts/JavaFX_Charts.iml" filepath="$PROJECT_DIR$/JavaFX_Charts/JavaFX_Charts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavaFX_Compresser_App/JavaFX_Compresser_App.iml" filepath="$PROJECT_DIR$/JavaFX_Compresser_App/JavaFX_Compresser_App.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyProjects.iml" filepath="$PROJECT_DIR$/MyProjects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NodePlacerApp/NodePlacerApp.iml" filepath="$PROJECT_DIR$/NodePlacerApp/NodePlacerApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/Prime_Numbers/Prime_Numbers.iml" filepath="$PROJECT_DIR$/Prime_Numbers/Prime_Numbers.iml" group="Utils" />
+      <module fileurl="file://$PROJECT_DIR$/RandomAppsOrCMDPrograms/RandomAppsOrCMDPrograms.iml" filepath="$PROJECT_DIR$/RandomAppsOrCMDPrograms/RandomAppsOrCMDPrograms.iml" />
       <module fileurl="file://$PROJECT_DIR$/RandomStuff/RandomStuff.iml" filepath="$PROJECT_DIR$/RandomStuff/RandomStuff.iml" group="Random" />
       <module fileurl="file://$PROJECT_DIR$/RedditHelp/RedditHelp.iml" filepath="$PROJECT_DIR$/RedditHelp/RedditHelp.iml" group="Random" />
       <module fileurl="file://$PROJECT_DIR$/Regex/Regex.iml" filepath="$PROJECT_DIR$/Regex/Regex.iml" />
@@ -33,9 +33,11 @@
       <module fileurl="file://$PROJECT_DIR$/Stream/Stream.iml" filepath="$PROJECT_DIR$/Stream/Stream.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Threads/Threads.iml" filepath="$PROJECT_DIR$/Threads/Threads.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/TimeAndAlarms/TimeAndAlarms.iml" filepath="$PROJECT_DIR$/TimeAndAlarms/TimeAndAlarms.iml" group="Apps" />
+      <module fileurl="file://$PROJECT_DIR$/TimeAndPay/TimeAndPay.iml" filepath="$PROJECT_DIR$/TimeAndPay/TimeAndPay.iml" />
       <module fileurl="file://$PROJECT_DIR$/TimeKeeper/TimeKeeper.iml" filepath="$PROJECT_DIR$/TimeKeeper/TimeKeeper.iml" group="Apps" />
       <module fileurl="file://$PROJECT_DIR$/Trigonometry/Trigonometry.iml" filepath="$PROJECT_DIR$/Trigonometry/Trigonometry.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/Utility/Utility.iml" filepath="$PROJECT_DIR$/Utility/Utility.iml" group="Utils" />
+      <module fileurl="file://$PROJECT_DIR$/WageCalculator/WageCalculator.iml" filepath="$PROJECT_DIR$/WageCalculator/WageCalculator.iml" />
       <module fileurl="file://$PROJECT_DIR$/WebsiteTomcat9/WebsiteTomcat9.iml" filepath="$PROJECT_DIR$/WebsiteTomcat9/WebsiteTomcat9.iml" />
       <module fileurl="file://$PROJECT_DIR$/XML/XML.iml" filepath="$PROJECT_DIR$/XML/XML.iml" group="Utils" />
       <module fileurl="file://$PROJECT_DIR$/[HTML] HTML and CSS/[HTML] HTML and CSS.iml" filepath="$PROJECT_DIR$/[HTML] HTML and CSS/[HTML] HTML and CSS.iml" />

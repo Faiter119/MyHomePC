@@ -28,8 +28,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="1_main" target="1.8" />
-      <module name="1_test" target="1.8" />
+      <module name="1_main" target="1.5" />
+      <module name="1_test" target="1.5" />
       <module name="DiceSpark" target="1.8" />
       <module name="SpringBootTest" target="1.6" />
       <module name="SysWeb" target="1.5" />
